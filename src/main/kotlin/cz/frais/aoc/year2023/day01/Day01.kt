@@ -6,12 +6,12 @@ private val logger = KotlinLogging.logger {}
 
 private const val TENS_ORDER = 10
 
-fun calibrationValue(line: String): Int {
+internal fun calibrationValue(line: String): Int {
     val digits = Regex("""\d""").findAll(line).map { matchResult -> matchResult.value.toInt() }
     return TENS_ORDER * digits.first() + digits.last()
 }
 
-fun calibrationValue(lines: List<String>): Int {
+internal fun calibrationValue(lines: List<String>): Int {
     var result = 0
     lines.forEach { line -> result += calibrationValue(line) }
     return result
