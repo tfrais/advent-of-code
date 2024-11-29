@@ -13,9 +13,24 @@ class Day01Test {
     }
 
     @Test
-    fun testCalibrationValueForInputFile() {
+    fun testCalibrationValueForInputFilePart1() {
         val content = object {}.javaClass.getResource("/2023/day01_test_input_part1.txt")!!.readText()
         assertThat(calibrationValue(content.lines())).isEqualTo(142)
+    }
+
+    @Test
+    fun testTranslateDigitNames() {
+        assertThat(translateDigitNames("two1nine")).isEqualTo("219")
+        assertThat(translateDigitNames("eightwothree")).isEqualTo("8wo3")
+        assertThat(translateDigitNames("4nineeightseven2")).isEqualTo("49872")
+        assertThat(translateDigitNames("zoneight234")).isEqualTo("z1ight234")
+
+    }
+
+    @Test
+    fun testCalibrationValueForInputFilePart2() {
+        val content = object {}.javaClass.getResource("/2023/day01_test_input_part2.txt")!!.readText()
+        assertThat(calibrationValue(content.lines())).isEqualTo(281)
     }
 
 }
