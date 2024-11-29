@@ -64,8 +64,28 @@ internal fun computeSumOfNumbersAdjacentToSymbol(plan: Plan): Int {
     return sum
 }
 
+internal fun computeSumOfGearRatios(plan: Plan): Long {
+    var sum = 0L
+    for (y in 0..<plan.getHeight()) {
+        for (x in 0..<plan.getWidth()) {
+            if (plan.get(x, y) == '*') {
+                val adjacentNumbers = getAdjacentPositions(x - 1, x + 1, y - 1, y + 1)
+                    .filter { position -> plan.containsDigit(position.first, position.second) }
+                    .map { position -> detectFullNumber(plan, position.first, position.second) }
+                    .distinct()
+                if (adjacentNumbers.size == 2) {
+                    sum += adjacentNumbers[0].number * adjacentNumbers[1].number
+                }
+            }
+        }
+    }
+    return sum
+}
+
 fun main() {
     val content = object {}.javaClass.getResource("/2023/day03_input.txt")!!.readText()
-    val result = computeSumOfNumbersAdjacentToSymbol(Plan(content))
-    logger.info { "Result is $result." }
+    val plan = Plan(content)
+
+    logger.info { "Part 1 result is ${computeSumOfNumbersAdjacentToSymbol(plan)}." }
+    logger.info { "Part 2 result is ${computeSumOfGearRatios(plan)}." }
 }

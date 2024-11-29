@@ -71,4 +71,11 @@ class Day03Test {
         assertThat(computeSumOfNumbersAdjacentToSymbol(Plan("..%\n1.."))).isEqualTo(0)
     }
 
+    @Test
+    fun testSumOfGearRatioForInputFile() {
+        val content = object {}.javaClass.getResource("/2023/day03_test_input.txt")!!.readText()
+        val actual = computeSumOfGearRatios(Plan(content))
+        assertThat(actual).isEqualTo(467835)
+    }
+
 }
