@@ -65,4 +65,10 @@ class Day03Test {
         assertThat(actual).isEqualTo(4361)
     }
 
+    @Test
+    fun computeSumOfNumbersAdjacentToSymbol() {
+        assertThat(computeSumOfNumbersAdjacentToSymbol(Plan("..%\n.1."))).isEqualTo(1)
+        assertThat(computeSumOfNumbersAdjacentToSymbol(Plan("..%\n1.."))).isEqualTo(0)
+    }
+
 }

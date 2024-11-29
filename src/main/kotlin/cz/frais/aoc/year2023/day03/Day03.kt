@@ -33,7 +33,7 @@ internal fun getAdjacentPositions(minX: Int, maxX: Int, minY: Int, maxY: Int): L
 internal fun getAdjacentPositions(detectNumberResult: DetectNumberResult): List<Pair<Int, Int>> {
     return getAdjacentPositions(
         detectNumberResult.firstPosition - 1,
-        detectNumberResult.firstPosition + detectNumberResult.length + 1,
+        detectNumberResult.firstPosition + detectNumberResult.length,
         detectNumberResult.lineIndex - 1,
         detectNumberResult.lineIndex + 1
     )
