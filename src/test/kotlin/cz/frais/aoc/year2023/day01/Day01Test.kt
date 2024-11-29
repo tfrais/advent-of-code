@@ -1,4 +1,4 @@
-package year2023.day01
+package cz.frais.aoc.year2023.day01
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

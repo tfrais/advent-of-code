@@ -1,12 +1,14 @@
-package year2023.day01
+package cz.frais.aoc.year2023.day01
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
+private const val TENS_ORDER = 10
+
 fun calibrationValue(line: String): Int {
     val digits = Regex("""\d""").findAll(line).map { matchResult -> matchResult.value.toInt() }
-    return 10 * digits.first() + digits.last()
+    return TENS_ORDER * digits.first() + digits.last()
 }
 
 fun calibrationValue(lines: List<String>): Int {
