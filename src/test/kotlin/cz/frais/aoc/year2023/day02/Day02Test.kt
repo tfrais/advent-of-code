@@ -55,9 +55,22 @@ class Day02Test {
 
     @Test
     fun testValueOfPossibleGamesForInputFile() {
-        val content = object {}.javaClass.getResource("/2023/day02_test_input_part1.txt")!!.readText()
+        val content = object {}.javaClass.getResource("/2023/day02_test_input.txt")!!.readText()
         val expectedColors = mapOf("red" to 12, "green" to 13, "blue" to 14)
         val actual = valueOfPossibleGames(content.lines().map { parseGame(it) }, expectedColors)
         assertThat(actual).isEqualTo(8)
+    }
+
+    @Test
+    fun testPowerOfGame() {
+        val rawGame = "Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red"
+        assertThat(powerOfGame(parseGame(rawGame))).isEqualTo(1560)
+    }
+
+    @Test
+    fun testPowerOfGamesForInputFile() {
+        val content = object {}.javaClass.getResource("/2023/day02_test_input.txt")!!.readText()
+        val actual = powerOfGames(content.lines().map { parseGame(it) })
+        assertThat(actual).isEqualTo(2286)
     }
 }

@@ -25,13 +25,15 @@ fun parseGame(rawGame: String): Game {
     return Game(gameId, gameTurns)
 }
 
-fun isGamePossible(game: Game, expectedColors: Map<String, Int>): Boolean {
-    val gameMaxMap = game.turns.map { it.colorMap }
+fun getGameMaxMap(game: Game): Map<String, Int> {
+    return game.turns.map { it.colorMap }
         .flatMap { it.entries }
         .groupBy({ it.key }, { it.value })
         .mapValues { (_, values) -> values.maxOrNull() ?: 0 }
+}
 
-    return gameMaxMap.all { (key, gameMaxValue) ->
+fun isGamePossible(game: Game, expectedColors: Map<String, Int>): Boolean {
+    return getGameMaxMap(game).all { (key, gameMaxValue) ->
         gameMaxValue <= (expectedColors[key] ?: return@all false)
     }
 }
@@ -41,10 +43,20 @@ fun valueOfPossibleGames(games: List<Game>, expectedColors: Map<String, Int>): I
         .sumOf { it.id }
 }
 
+fun powerOfGame(game: Game): Int {
+    return getGameMaxMap(game).values.reduce { acc, number -> acc * number }
+}
+
+fun powerOfGames(games: List<Game>): Int {
+    return games.sumOf { powerOfGame(it) }
+}
+
 @Suppress("MagicNumber")
 fun main() {
     val content = object {}.javaClass.getResource("/2023/day02_input.txt")!!.readText()
+    val parsedGames = content.lines().map { parseGame(it) }
     val expectedColors = mapOf("red" to 12, "green" to 13, "blue" to 14)
-    val result = valueOfPossibleGames(content.lines().map { parseGame(it) }, expectedColors)
-    logger.info { "Result is $result." }
+
+    logger.info { "Part 1 result is ${valueOfPossibleGames(parsedGames, expectedColors)}." }
+    logger.info { "Part 2 result is ${powerOfGames(parsedGames)}." }
 }
