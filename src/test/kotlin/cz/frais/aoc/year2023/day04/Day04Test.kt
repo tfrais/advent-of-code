@@ -38,4 +38,11 @@ class Day04Test {
         assertThat(actual).isEqualTo(13)
     }
 
+    @Test
+    fun testCalculatePart2ForInputFile() {
+        val content = object {}.javaClass.getResource("/2023/day04_test_input.txt")!!.readText()
+        val actual = calculatePart2(content.lines().map { parseCard(it) })
+        assertThat(actual).isEqualTo(30)
+    }
+
 }
