@@ -1,6 +1,7 @@
 package cz.frais.aoc.year2023.day08
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.math.BigInteger
 
 private val logger = KotlinLogging.logger {}
 private val parser = Parser()
@@ -25,16 +26,25 @@ private fun choosePath(instruction: Char, nodes: Pair<String, String>): String {
     }
 }
 
-internal fun walkGhost(document: Document): Int {
-    var steps = 0
-    var currentPositions = document.nodeMap.keys.filter { it.endsWith("A") }
+internal fun walkGhost(document: Document): BigInteger {
+    val currentPositions = document.nodeMap.keys.filter { it.endsWith("A") }.toMutableList()
+    val steps = currentPositions.map { _ -> 0 }.toMutableList()
     while (currentPositions.any { !it.endsWith("Z") }) {
         for (instruction in document.instructions) {
-            currentPositions = currentPositions.map { choosePath(instruction, document.nodeMap[it]!!) }
-            steps++
+            for ((index, currentPosition) in currentPositions.withIndex()) {
+                if (!currentPosition.endsWith("Z")) {
+                    currentPositions[index] = choosePath(instruction, document.nodeMap[currentPosition]!!)
+                    steps[index]++
+                }
+            }
         }
     }
-    return steps
+    return lcm(steps)
+}
+
+internal fun lcm(numbers: List<Int>): BigInteger {
+    return numbers.map { it.toBigInteger() }
+        .reduce { acc, num -> (acc.multiply(num).divide(acc.gcd(num))) }
 }
 
 fun main() {
