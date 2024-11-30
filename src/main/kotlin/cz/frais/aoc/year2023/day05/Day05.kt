@@ -1,6 +1,7 @@
 package cz.frais.aoc.year2023.day05
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.util.stream.Collectors
 
 private val logger = KotlinLogging.logger {}
 private val parser = Parser()
@@ -19,7 +20,10 @@ internal fun calculate(almanac: Almanac, range: LongRange): Long {
 }
 
 internal fun calculate(almanac: Almanac, initialElementRanges: List<LongRange>): Long {
-    return initialElementRanges.minOfOrNull { calculate(almanac, it) } ?: 0
+    return initialElementRanges.parallelStream()
+        .map { range -> calculate(almanac, range) }
+        .collect(Collectors.minBy(Comparator.naturalOrder()))
+        .orElse(0)
 }
 
 fun main() {
