@@ -5,65 +5,96 @@ import org.junit.jupiter.api.Test
 
 class Day05Test {
 
+    private val parser = Parser()
+
     @Test
-    fun testParseElements() {
-        val almanac = Almanac(" seeds :  1 23  456 ")
-        assertThat(almanac.initialElementCategory).isEqualTo("seed")
-        assertThat(almanac.initialElements).usingRecursiveComparison().isEqualTo(setOf(1L, 23L, 456L))
+    fun testParseInitialElementsCategory() {
+        val parserResult = parser.parse(" seeds :  1 23  456 ", false)
+        assertThat(parserResult.initialElementCategory).isEqualTo("seed")
     }
 
     @Test
-    fun testParseSimpleAlmanac() {
-        val almanac = Almanac(" seeds :  1 23  456 \n\nseed-to-soil map:\n50 98 2")
-        assertThat(almanac.map).usingRecursiveComparison().isEqualTo(
-            setOf(
-                Almanac.AlmanacMapEntry(
-                    "seed", "soil", 50, 98, 2
-                )
+    fun testParseElementsNotAsRanges() {
+        val parserResult = parser.parse(" seeds :  1 23  456 ", false)
+        assertThat(parserResult.initialElementRanges).usingRecursiveComparison().isEqualTo(
+            listOf(1L..1L, 23L..23L, 456L..456L)
+        )
+    }
+
+    @Test
+    fun testParseElementsAsRanges() {
+        val parserResult = parser.parse(" seeds :  79  14 55  13  ", true)
+        assertThat(parserResult.initialElementRanges).usingRecursiveComparison().isEqualTo(
+            listOf(79L..92L, 55L..67L)
+        )
+    }
+
+    @Test
+    fun testParseAlmanacCategoryMap() {
+        val input = " seeds :  1 23  456 \n\nseed-to-soil map:\n50 98 2\n10 15 1"
+        val parserResult = parser.parse(input, false)
+        assertThat(parserResult.almanac.categoryMap).usingRecursiveComparison().isEqualTo(
+            mapOf(
+                "seed" to
+                        listOf(
+                            Almanac.AlmanacMapEntry(50, 98, 2),
+                            Almanac.AlmanacMapEntry(10, 15, 1)
+                        )
             )
         )
     }
 
     @Test
+    fun testParseAlmanacCategoryOrder() {
+        val input = " seeds :  1 23  456 \n\nseed-to-soil map:\n50 98 2\n" +
+                "soil-to-fertilizer map:\n0 15 37"
+        val parserResult = parser.parse(input, false)
+        assertThat(parserResult.almanac.categoryOrder).usingRecursiveComparison().isEqualTo(
+            listOf("seed", "soil", "fertilizer")
+        )
+    }
+
+    @Test
     fun testParseAlmanacForInputFile() {
-        val almanac = Almanac(object {}.javaClass.getResource("/2023/day05_test_input.txt")!!.readText())
-        assertThat(almanac.initialElementCategory).isEqualTo("seed")
-        assertThat(almanac.initialElements.size).isEqualTo(4)
-        assertThat(almanac.map.size).isEqualTo(18)
-        assertThat(almanac.map.map { it.sourceElementCategory }.distinct())
-            .containsExactly("seed", "soil", "fertilizer", "water", "light", "temperature", "humidity")
-        assertThat(almanac.map.filter { it.destinationElementCategory == "water" }.size).isEqualTo(4)
-
+        val input = object {}.javaClass.getResource("/2023/day05_test_input.txt")!!.readText()
+        val parserResult = parser.parse(input, false)
+        assertThat(parserResult.initialElementCategory).isEqualTo("seed")
+        assertThat(parserResult.initialElementRanges.size).isEqualTo(4)
+        assertThat(parserResult.almanac.categoryMap["water"]?.size).isEqualTo(2)
+        assertThat(parserResult.almanac.categoryOrder)
+            .containsExactly("seed", "soil", "fertilizer", "water", "light", "temperature", "humidity", "location")
     }
 
     @Test
-    fun testGetDestinationElementForKnownMapping() {
-        val almanac = Almanac(" seeds :  1 23  456 \n\nseed-to-soil map:\n50 98 2")
-        assertThat(almanac.getDestinationElement("seed", "soil", 98))
-            .isEqualTo(50)
-        assertThat(almanac.getDestinationElement("seed", "soil", 99))
+    fun testAlmanacGetElementWhenMappingExists() {
+        val input = " seeds :  1 23  456 \n\nseed-to-soil map:\n50 98 2"
+        val parserResult = parser.parse(input, false)
+        assertThat(parserResult.almanac.getElement( 99, "seed"))
             .isEqualTo(51)
     }
 
     @Test
-    fun testGetDestinationElementForUnknownMappingRange() {
-        val almanac = Almanac(" seeds :  1 23  456 \n\nseed-to-soil map:\n50 98 2")
-        assertThat(almanac.getDestinationElement("seed", "soil", 999))
-            .isEqualTo(999)
-    }
-
-    @Test
-    fun testGetDestinationElementWhenNoDestinationCategorySpecified() {
-        val almanac = Almanac(" seeds :  1 23  456 \n\nseed-to-soil map:\n50 98 2")
-        assertThat(almanac.getDestinationElement("seed", 99))
-            .isEqualTo(51)
+    fun testAlmanacGetElementWhenMappingDoesNotExist() {
+        val input = " seeds :  1 23  456 \n\nseed-to-soil map:\n50 98 2"
+        val parserResult = parser.parse(input, false)
+        assertThat(parserResult.almanac.getElement( 10, "seed"))
+            .isEqualTo(10)
     }
 
     @Test
     fun testCalculatePart1ForInputFile() {
-        val almanac = Almanac(object {}.javaClass.getResource("/2023/day05_test_input.txt")!!.readText())
-        val actual = calculatePart1(almanac, "location")
+        val input = object {}.javaClass.getResource("/2023/day05_test_input.txt")!!.readText()
+        val parserResult = parser.parse(input, false)
+        val actual = calculate(parserResult.almanac, parserResult.initialElementRanges)
         assertThat(actual).isEqualTo(35)
+    }
+
+    @Test
+    fun testCalculatePart2ForInputFile() {
+        val input = object {}.javaClass.getResource("/2023/day05_test_input.txt")!!.readText()
+        val parserResult = parser.parse(input, true)
+        val actual = calculate(parserResult.almanac, parserResult.initialElementRanges)
+        assertThat(actual).isEqualTo(46)
     }
 
 }
