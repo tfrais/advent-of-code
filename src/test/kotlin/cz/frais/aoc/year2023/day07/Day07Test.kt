@@ -15,9 +15,9 @@ class Day07Test {
 
     @Test
     fun testParseHand() {
-        assertThat(parser.parseHand("T55J5 684")).usingRecursiveComparison().isEqualTo(
+        assertThat(parser.parseHand("T55Q5 684")).usingRecursiveComparison().isEqualTo(
             Hand(
-                listOf(Card.TEN, Card.FIVE, Card.FIVE, Card.JACK, Card.FIVE),
+                listOf(Card.TEN, Card.FIVE, Card.FIVE, Card.QUEEN, Card.FIVE),
                 684
             )
         )
@@ -35,10 +35,10 @@ class Day07Test {
     }
 
     @Test
-    fun testCalculatePart1ForInputFile() {
+    fun testCalculateForInputFile() {
         val input = object {}.javaClass.getResource("/2023/day07_test_input.txt")!!.readText()
         val actual = calculatePart1(input.lines().map { parser.parseHand(it) })
-        assertThat(actual).isEqualTo(6440)
+        assertThat(actual).isEqualTo(5905)
     }
 
 }

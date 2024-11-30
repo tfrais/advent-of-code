@@ -14,7 +14,7 @@ internal fun calculatePart1(hands: List<Hand>): Long {
 
 fun main() {
     val content = object {}.javaClass.getResource("/2023/day07_input.txt")!!.readText()
-    val resultPart1 = calculatePart1(content.lines().map { parser.parseHand(it) })
+    val resultPart2 = calculatePart1(content.lines().map { parser.parseHand(it) })
 
-    logger.info { "Part 1 result is $resultPart1." }
+    logger.info { "Part 2 result is $resultPart2." }
 }

@@ -9,8 +9,8 @@ internal data class Hand(
         internal const val CARDS_IN_HAND = 5
 
         internal val comparator: Comparator<Hand> = Comparator { hand1, hand2 ->
-            val hand1TypeOrdinal = Type.resolveType(hand1).ordinal
-            val hand2TypeOrdinal = Type.resolveType(hand2).ordinal
+            val hand1TypeOrdinal = resolveTypeOrdinalWithJokers(hand1.cards)
+            val hand2TypeOrdinal = resolveTypeOrdinalWithJokers(hand2.cards)
 
             if (hand1TypeOrdinal != hand2TypeOrdinal) {
                 hand1TypeOrdinal.compareTo(hand2TypeOrdinal)
@@ -21,6 +21,11 @@ internal data class Hand(
                 }
                 hand1.bid.compareTo(hand2.bid)
             }
+        }
+
+        private fun resolveTypeOrdinalWithJokers(cards: List<Card>): Int {
+            return JokerExpander.expandJokers(cards)
+                .maxOfOrNull { Type.resolveType(Hand(it, 0)).ordinal } ?: 0
         }
     }
 

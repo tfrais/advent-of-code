@@ -2,6 +2,7 @@ package cz.frais.aoc.year2023.day07
 
 internal enum class Card(val code: Char) {
 
+    JOKER('J'),
     TWO('2'),
     THREE('3'),
     FOUR('4'),
@@ -11,7 +12,6 @@ internal enum class Card(val code: Char) {
     EIGHT('8'),
     NINE('9'),
     TEN('T'),
-    JACK('J'),
     QUEEN('Q'),
     KING('K'),
     ACE('A');
