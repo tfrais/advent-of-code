@@ -25,8 +25,25 @@ private fun choosePath(instruction: Char, nodes: Pair<String, String>): String {
     }
 }
 
+internal fun walkGhost(document: Document): Int {
+    var steps = 0
+    var currentPositions = document.nodeMap.keys.filter { it.endsWith("A") }
+    while (currentPositions.any { !it.endsWith("Z") }) {
+        for (instruction in document.instructions) {
+            currentPositions = currentPositions.map { choosePath(instruction, document.nodeMap[it]!!) }
+            steps++
+        }
+    }
+    return steps
+}
+
 fun main() {
     val content = object {}.javaClass.getResource("/2023/day08_input.txt")!!.readText()
-    val resultPart1 = walk(parser.parse(content))
+    val document = parser.parse(content)
+
+    val resultPart1 = walk(document)
     logger.info { "Part 1 result is $resultPart1." }
+
+    val resultPart2 = walkGhost(document)
+    logger.info { "Part 2 result is $resultPart2." }
 }

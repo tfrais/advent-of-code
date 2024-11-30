@@ -30,4 +30,10 @@ class Day08Test {
         assertThat(walk(parser.parse(input))).isEqualTo(6)
     }
 
+    @Test
+    fun testWalkGhostForInputFile() {
+        val input = object {}.javaClass.getResource("/2023/day08_test_input_part2.txt")!!.readText()
+        assertThat(walkGhost(parser.parse(input))).isEqualTo(6)
+    }
+
 }
