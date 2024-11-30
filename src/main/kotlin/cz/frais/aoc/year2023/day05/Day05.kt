@@ -5,26 +5,21 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 private val logger = KotlinLogging.logger {}
 private val parser = Parser()
 
-internal fun calculate(
-    almanac: Almanac,
-    initialElementRanges: List<LongRange>
-): Long {
+internal fun calculate(almanac: Almanac, range: LongRange): Long {
     var min = Long.MAX_VALUE
-    for (range in initialElementRanges) {
-        logger.debug { "Starting processing range $range" }
-        for (element in range) {
-            if (element % 10000000L == 0L) {
-                logger.debug { "Going through element $element. The current min is $min" }
-            }
-            val finalElement = almanac.getFinalElement(element)
-            if (finalElement < min) {
-                min = finalElement
-            }
+    logger.debug { "Starting processing range $range" }
+    for (element in range) {
+        val finalElement = almanac.getFinalElement(element)
+        if (finalElement < min) {
+            min = finalElement
         }
-        logger.debug { "Ending processing range $range. The current min is $min" }
     }
-
+    logger.debug { "Ending processing range $range. Its min is $min" }
     return min
+}
+
+internal fun calculate(almanac: Almanac, initialElementRanges: List<LongRange>): Long {
+    return initialElementRanges.minOfOrNull { calculate(almanac, it) } ?: 0
 }
 
 fun main() {
