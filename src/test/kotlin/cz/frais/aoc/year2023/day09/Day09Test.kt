@@ -26,4 +26,11 @@ class Day09Test {
 
     }
 
+    @Test
+    fun testExtrapolateBackwards() {
+        assertThat(extrapolateBackwards("0 3 6 9 12 15")).isEqualTo(-3)
+        assertThat(extrapolateBackwards("1 3 6 10 15 21")).isEqualTo(0)
+        assertThat(extrapolateBackwards("10 13 16 21 30 45")).isEqualTo(5)
+    }
+
 }
