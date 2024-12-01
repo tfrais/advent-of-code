@@ -23,8 +23,16 @@ internal fun calculatePart1(lists: Pair<List<Int>, List<Int>>): Int {
     return sumDistance
 }
 
+internal fun calculatePart2(lists: Pair<List<Int>, List<Int>>): Int {
+    val rightFrequencyMap: Map<Int, Int> = lists.second.groupingBy { it }.eachCount()
+    var similarityScore = 0
+    lists.first.forEach { similarityScore += it * (rightFrequencyMap[it] ?: 0) }
+    return similarityScore
+}
+
 fun main() {
     val content = object {}.javaClass.getResource("/2024/day01_input.txt")!!.readText()
-    val resultPart1 = calculatePart1(parse(content.lines()))
-    println("Part 1 result is $resultPart1.")
+    val parsed = parse(content.lines())
+    println("Part 1 result is ${calculatePart1(parsed)}.")
+    println("Part 2 result is ${calculatePart2(parsed)}.")
 }
