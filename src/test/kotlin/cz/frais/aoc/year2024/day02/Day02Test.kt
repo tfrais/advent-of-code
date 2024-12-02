@@ -16,4 +16,14 @@ class Day02Test {
         assertTrue(isSafe(listOf(1, 3, 6, 7, 9)))
     }
 
+    @Test
+    fun testIsSafeAfterRemovingElement() {
+        assertTrue(isSafeAfterRemovingElement(listOf(7, 6, 4, 2, 1)))
+        assertFalse(isSafeAfterRemovingElement(listOf(1, 2, 7, 8, 9)))
+        assertFalse(isSafeAfterRemovingElement(listOf(9, 7, 6, 2, 1)))
+        assertTrue(isSafeAfterRemovingElement(listOf(1, 3, 2, 4, 5)))
+        assertTrue(isSafeAfterRemovingElement(listOf(8, 6, 4, 4, 1)))
+        assertTrue(isSafeAfterRemovingElement(listOf(1, 3, 6, 7, 9)))
+    }
+
 }

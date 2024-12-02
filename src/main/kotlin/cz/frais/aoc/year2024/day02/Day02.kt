@@ -18,12 +18,23 @@ internal fun isSafe(report: List<Int>): Boolean {
             && diffs.map { sign(it.toDouble()) }.distinct().size == 1
 }
 
+internal fun isSafeAfterRemovingElement(report: List<Int>): Boolean {
+    return report.indices.any { i ->
+        isSafe(report.filterIndexed { index, _ -> index != i })
+    }
+}
+
 internal fun calculatePart1(reports: List<List<Int>>): Int {
     return reports.filter { isSafe(it) }.size
+}
+
+internal fun calculatePart2(reports: List<List<Int>>): Int {
+    return reports.filter { isSafeAfterRemovingElement(it) }.size
 }
 
 fun main() {
     val content = object {}.javaClass.getResource("/2024/day02_input.txt")!!.readText()
     val parsed = parse(content)
     println("Part 1 result is ${calculatePart1(parsed)}.")
+    println("Part 2 result is ${calculatePart2(parsed)}.")
 }
