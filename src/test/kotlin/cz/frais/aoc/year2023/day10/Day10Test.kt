@@ -52,13 +52,37 @@ class Day10Test {
     @Test
     fun testCalculatePart1Plan1() {
         val input = object {}.javaClass.getResource("/2023/day10_test_input_part1_plan1.txt")!!.readText()
-        assertThat(calculatePart1(input)).isEqualTo(4)
+        assertThat(calculatePart1(Plan(input))).isEqualTo(4)
     }
 
     @Test
     fun testCalculatePart1Plan2() {
         val input = object {}.javaClass.getResource("/2023/day10_test_input_part1_plan2.txt")!!.readText()
-        assertThat(calculatePart1(input)).isEqualTo(8)
+        assertThat(calculatePart1(Plan(input))).isEqualTo(8)
+    }
+
+    @Test
+    fun testCalculatePart2Plan1() {
+        val input = object {}.javaClass.getResource("/2023/day10_test_input_part2_plan1.txt")!!.readText()
+        assertThat(calculatePart2(Plan(input))).isEqualTo(4)
+    }
+
+    @Test
+    fun testCalculatePart2Plan2() {
+        val input = object {}.javaClass.getResource("/2023/day10_test_input_part2_plan2.txt")!!.readText()
+        assertThat(calculatePart2(Plan(input))).isEqualTo(4)
+    }
+
+    @Test
+    fun testCalculatePart2Plan3() {
+        val input = object {}.javaClass.getResource("/2023/day10_test_input_part2_plan3.txt")!!.readText()
+        assertThat(calculatePart2(Plan(input))).isEqualTo(8)
+    }
+
+    @Test
+    fun testCalculatePart2Plan4() {
+        val input = object {}.javaClass.getResource("/2023/day10_test_input_part2_plan4.txt")!!.readText()
+        assertThat(calculatePart2(Plan(input))).isEqualTo(10)
     }
 
 }
