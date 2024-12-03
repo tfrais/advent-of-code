@@ -1,7 +1,7 @@
 package cz.frais.aoc.year2023.day10
 
-import cz.frais.aoc.Position
-import cz.frais.aoc.Vector
+import cz.frais.aoc.structures.Position
+import cz.frais.aoc.structures.Vector
 
 class Plan(rawPlan: String) {
 

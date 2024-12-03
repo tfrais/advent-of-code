@@ -1,4 +1,4 @@
-src/main/resources/**/day*_input.txt
+src/main/resources/**/day*_input*.txt
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
