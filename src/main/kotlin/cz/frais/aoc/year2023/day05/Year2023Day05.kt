@@ -7,7 +7,7 @@ object Year2023Day05 : AdventOfCodeDaySolution {
 
     private val parser = Parser()
 
-    fun calculate(almanac: Almanac, range: LongRange): Long {
+    fun compute(almanac: Almanac, range: LongRange): Long {
         var min = Long.MAX_VALUE
         for (element in range) {
             val finalElement = almanac.getFinalElement(element)
@@ -18,21 +18,21 @@ object Year2023Day05 : AdventOfCodeDaySolution {
         return min
     }
 
-    fun calculate(almanac: Almanac, initialElementRanges: List<LongRange>): Long {
+    fun compute(almanac: Almanac, initialElementRanges: List<LongRange>): Long {
         return initialElementRanges.parallelStream()
-            .map { range -> calculate(almanac, range) }
+            .map { range -> compute(almanac, range) }
             .collect(Collectors.minBy(Comparator.naturalOrder()))
             .orElse(0)
     }
 
     override fun computePart1(input: String): Long {
         val parserResultPart = parser.parse(input, false)
-        return calculate(parserResultPart.almanac, parserResultPart.initialElementRanges)
+        return compute(parserResultPart.almanac, parserResultPart.initialElementRanges)
     }
 
     override fun computePart2(input: String): Long {
         val parserResultPart = parser.parse(input, true)
-        return calculate(parserResultPart.almanac, parserResultPart.initialElementRanges)
+        return compute(parserResultPart.almanac, parserResultPart.initialElementRanges)
     }
 
 }

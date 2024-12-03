@@ -58,7 +58,7 @@ class Year2023Day11Test {
     }
 
     @Test
-    fun testCalculatePart2ForInputFile() {
+    fun testComputeDistanceSumWithExpansionSizeForInputFile() {
         val space = SpaceParser.parse(
             object {}.javaClass.getResource("/2023/day11_test_input_part1.txt")!!.readText()
         )

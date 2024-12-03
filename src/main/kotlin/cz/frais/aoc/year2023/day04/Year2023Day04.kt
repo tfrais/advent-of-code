@@ -19,23 +19,23 @@ object Year2023Day04 : AdventOfCodeDaySolution {
         return Card(cardId, parseNumbersFromCard(numberParts[0]), parseNumbersFromCard(numberParts[1]))
     }
 
-    fun calculateMatchingNumbers(card: Card): Int {
+    fun computeMatchingNumbers(card: Card): Int {
         return card.numbers.intersect(card.winningNumbers).size
     }
 
-    fun calculatePoints(card: Card): Int {
-        val intersectSize = calculateMatchingNumbers(card)
+    fun computePart1(card: Card): Int {
+        val intersectSize = computeMatchingNumbers(card)
         return if (intersectSize > 0) 2.0.pow(intersectSize - 1).toInt() else 0
     }
 
-    fun calculatePoints(cards: List<Card>): Int {
-        return cards.sumOf { calculatePoints(it) }
+    fun computePart1(cards: List<Card>): Int {
+        return cards.sumOf { computePart1(it) }
     }
 
-    fun calculatePointsPart2(cards: List<Card>): Int {
+    fun computePart2(cards: List<Card>): Int {
         val cardMap = cards.associateWith { 1 }.toSortedMap(compareBy { it.id })
         for (card in cardMap.keys) {
-            val matchingNumbers = calculateMatchingNumbers(card)
+            val matchingNumbers = computeMatchingNumbers(card)
             for (i in (card.id + 1)..card.id + matchingNumbers) {
                 val cardI = cardMap.entries.find { it.key.id == i }
                 if (cardI != null) {
@@ -47,11 +47,11 @@ object Year2023Day04 : AdventOfCodeDaySolution {
     }
 
     override fun computePart1(input: String): Long {
-        return calculatePoints(input.lines().map { parseCard(it) }).toLong()
+        return computePart1(input.lines().map { parseCard(it) }).toLong()
     }
 
     override fun computePart2(input: String): Long {
-        return calculatePointsPart2(input.lines().map { parseCard(it) }).toLong()
+        return computePart2(input.lines().map { parseCard(it) }).toLong()
     }
 
 }

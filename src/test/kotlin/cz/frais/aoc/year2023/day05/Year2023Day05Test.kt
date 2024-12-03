@@ -1,6 +1,6 @@
 package cz.frais.aoc.year2023.day05
 
-import cz.frais.aoc.year2023.day05.Year2023Day05.calculate
+import cz.frais.aoc.year2023.day05.Year2023Day05.compute
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -83,18 +83,18 @@ class Year2023Day05Test {
     }
 
     @Test
-    fun testCalculatePart1ForInputFile() {
+    fun testComputePart1ForInputFile() {
         val input = object {}.javaClass.getResource("/2023/day05_test_input.txt")!!.readText()
         val parserResult = parser.parse(input, false)
-        val actual = calculate(parserResult.almanac, parserResult.initialElementRanges)
+        val actual = compute(parserResult.almanac, parserResult.initialElementRanges)
         assertThat(actual).isEqualTo(35)
     }
 
     @Test
-    fun testCalculatePart2ForInputFile() {
+    fun testComputePart2ForInputFile() {
         val input = object {}.javaClass.getResource("/2023/day05_test_input.txt")!!.readText()
         val parserResult = parser.parse(input, true)
-        val actual = calculate(parserResult.almanac, parserResult.initialElementRanges)
+        val actual = compute(parserResult.almanac, parserResult.initialElementRanges)
         assertThat(actual).isEqualTo(46)
     }
 

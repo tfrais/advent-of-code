@@ -36,7 +36,7 @@ class Year2023Day07Test {
     }
 
     @Test
-    fun testCalculateForInputFile() {
+    fun testComputeForInputFile() {
         val input = object {}.javaClass.getResource("/2023/day07_test_input.txt")!!.readText()
         val actual = computePart1(input.lines().map { parser.parseHand(it) })
         assertThat(actual).isEqualTo(5905)
