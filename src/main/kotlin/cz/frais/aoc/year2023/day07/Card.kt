@@ -1,6 +1,6 @@
 package cz.frais.aoc.year2023.day07
 
-internal enum class Card(val code: Char) {
+enum class Card(val code: Char) {
 
     JOKER('J'),
     TWO('2'),

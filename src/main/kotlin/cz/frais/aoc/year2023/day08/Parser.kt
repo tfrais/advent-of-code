@@ -1,6 +1,6 @@
 package cz.frais.aoc.year2023.day08
 
-internal class Parser {
+class Parser {
 
     companion object {
         private val NODE_ELEMENT_REGEX: Regex =

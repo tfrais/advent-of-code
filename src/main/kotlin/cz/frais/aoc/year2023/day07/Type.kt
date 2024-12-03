@@ -1,7 +1,7 @@
 package cz.frais.aoc.year2023.day07
 
 @Suppress("MagicNumber")
-internal enum class Type(val doesApply: (Hand) -> Boolean) {
+enum class Type(val doesApply: (Hand) -> Boolean) {
 
     HIGH_CARD(
         { hand -> hand.distribution() == listOf(1, 1, 1, 1, 1) }

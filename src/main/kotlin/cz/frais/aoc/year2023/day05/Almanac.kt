@@ -1,8 +1,8 @@
 package cz.frais.aoc.year2023.day05
 
-internal data class Almanac(
+data class Almanac(
     val categoryMap: Map<String, List<AlmanacMapEntry>>,
-    val categoryOrder: List<String>
+    val categoryOrder: List<String>,
 ) {
 
     data class AlmanacMapEntry(

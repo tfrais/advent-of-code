@@ -2,7 +2,7 @@ package cz.frais.aoc.year2023.day10
 
 import cz.frais.aoc.Position
 
-internal object PipeCalculator {
+object PipeCalculator {
 
     fun nextPositions(currentPosition: Position, symbol: Symbol): List<Position> =
         symbol.vectors.map { it.apply(currentPosition) }

@@ -1,6 +1,6 @@
 package cz.frais.aoc.year2023.day07
 
-internal object JokerExpander {
+object JokerExpander {
 
     fun expandJokers(cards: List<Card>): List<List<Card>> {
         var expandedLists = listOf(listOf<Card>())

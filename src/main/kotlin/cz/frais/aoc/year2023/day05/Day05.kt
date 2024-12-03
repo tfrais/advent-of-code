@@ -6,7 +6,7 @@ import java.util.stream.Collectors
 private val logger = KotlinLogging.logger {}
 private val parser = Parser()
 
-internal fun calculate(almanac: Almanac, range: LongRange): Long {
+fun calculate(almanac: Almanac, range: LongRange): Long {
     var min = Long.MAX_VALUE
     logger.debug { "Starting processing range $range" }
     for (element in range) {
@@ -19,7 +19,7 @@ internal fun calculate(almanac: Almanac, range: LongRange): Long {
     return min
 }
 
-internal fun calculate(almanac: Almanac, initialElementRanges: List<LongRange>): Long {
+fun calculate(almanac: Almanac, initialElementRanges: List<LongRange>): Long {
     return initialElementRanges.parallelStream()
         .map { range -> calculate(almanac, range) }
         .collect(Collectors.minBy(Comparator.naturalOrder()))

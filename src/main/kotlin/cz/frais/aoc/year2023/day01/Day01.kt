@@ -7,7 +7,7 @@ private val logger = KotlinLogging.logger {}
 private const val TENS_ORDER = 10
 private val DIGIT_NAMES = listOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
 
-internal fun translateDigitNames(line: String): String {
+fun translateDigitNames(line: String): String {
     var result = line
     var i = 0
     while (i < result.length) {
@@ -26,12 +26,12 @@ internal fun translateDigitNames(line: String): String {
     return result
 }
 
-internal fun calibrationValue(line: String): Int {
+fun calibrationValue(line: String): Int {
     val digits = Regex("""\d""").findAll(translateDigitNames( line)).map { matchResult -> matchResult.value.toInt() }
     return TENS_ORDER * digits.first() + digits.last()
 }
 
-internal fun calibrationValue(lines: List<String>): Int {
+fun calibrationValue(lines: List<String>): Int {
     var result = 0
     lines.forEach { line -> result += calibrationValue(line) }
     return result

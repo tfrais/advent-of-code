@@ -1,14 +1,14 @@
 package cz.frais.aoc.year2023.day07
 
-internal data class Hand(
+data class Hand(
     val cards: List<Card>,
-    val bid: Int
+    val bid: Int,
 ) {
 
     companion object {
-        internal const val CARDS_IN_HAND = 5
+        const val CARDS_IN_HAND = 5
 
-        internal val comparator: Comparator<Hand> = Comparator { hand1, hand2 ->
+        val comparator: Comparator<Hand> = Comparator { hand1, hand2 ->
             val hand1TypeOrdinal = resolveTypeOrdinalWithJokers(hand1.cards)
             val hand2TypeOrdinal = resolveTypeOrdinalWithJokers(hand2.cards)
 

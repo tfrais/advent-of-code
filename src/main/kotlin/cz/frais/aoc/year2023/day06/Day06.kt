@@ -4,7 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-internal fun numberOfWays(race: Race): Long {
+fun numberOfWays(race: Race): Long {
     var result = 0L
     for (speed in 0..race.time) {
         val distanceAtSpeed = speed * (race.time - speed)
@@ -15,7 +15,7 @@ internal fun numberOfWays(race: Race): Long {
     return result
 }
 
-internal fun numberOfWays(races: List<Race>): Long {
+fun numberOfWays(races: List<Race>): Long {
     return races.map { numberOfWays(it) }.reduce { acc, number -> acc * number }
 }
 

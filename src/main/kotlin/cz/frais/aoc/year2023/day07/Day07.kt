@@ -5,7 +5,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 private val logger = KotlinLogging.logger {}
 private val parser = Parser()
 
-internal fun calculatePart1(hands: List<Hand>): Long {
+fun calculatePart1(hands: List<Hand>): Long {
     return hands
         .sortedWith(Hand.comparator)
         .mapIndexed { index, hand -> (index + 1L) * hand.bid }

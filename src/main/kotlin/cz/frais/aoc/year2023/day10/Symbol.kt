@@ -2,7 +2,7 @@ package cz.frais.aoc.year2023.day10
 
 import cz.frais.aoc.Vector
 
-internal enum class Symbol(
+enum class Symbol(
     val code: Char,
     val vectors: List<Vector>,
 ) {

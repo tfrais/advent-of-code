@@ -1,6 +1,6 @@
 package cz.frais.aoc.year2023.day05
 
-internal class Parser {
+class Parser {
 
     companion object {
         private val MAP_HEADER_REGEX: Regex = """(?<source>\w+)-to-(?<destination>\w+)\smap:""".toRegex()

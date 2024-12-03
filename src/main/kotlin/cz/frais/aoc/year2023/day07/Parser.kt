@@ -2,7 +2,7 @@ package cz.frais.aoc.year2023.day07
 
 import cz.frais.aoc.year2023.day07.Hand.Companion.CARDS_IN_HAND
 
-internal class Parser {
+class Parser {
 
     companion object {
         private val HAND_REGEX: Regex = """(\w)(\w)(\w)(\w)(\w)\s+(\d+)""".toRegex()

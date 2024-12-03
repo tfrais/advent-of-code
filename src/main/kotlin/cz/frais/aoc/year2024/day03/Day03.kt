@@ -11,13 +11,13 @@ private val multiplyMatchResult: (MatchResult) -> Int = { match ->
 private val PART2_REGEX: Regex =
     """${MUL_REGEX.pattern}|${Regex.escape(DO_PHRASE)}|${Regex.escape(DONT_PHRASE)}""".toRegex()
 
-internal fun calculatePart1(input: String): Int {
+fun calculatePart1(input: String): Int {
     return MUL_REGEX.findAll(input)
         .map(multiplyMatchResult)
         .sum()
 }
 
-internal fun calculatePart2(input: String): Int {
+fun calculatePart2(input: String): Int {
     var doPhase = true
     var result = 0
     PART2_REGEX.findAll(input).forEach {

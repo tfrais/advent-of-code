@@ -6,7 +6,7 @@ import java.math.BigInteger
 private val logger = KotlinLogging.logger {}
 private val parser = Parser()
 
-internal fun walk(document: Document): Int {
+fun walk(document: Document): Int {
     var steps = 0
     var currentPosition = "AAA"
     while (currentPosition != "ZZZ") {
@@ -26,7 +26,7 @@ private fun choosePath(instruction: Char, nodes: Pair<String, String>): String {
     }
 }
 
-internal fun walkGhost(document: Document): BigInteger {
+fun walkGhost(document: Document): BigInteger {
     val currentPositions = document.nodeMap.keys.filter { it.endsWith("A") }.toMutableList()
     val steps = currentPositions.map { _ -> 0 }.toMutableList()
     while (currentPositions.any { !it.endsWith("Z") }) {
@@ -42,7 +42,7 @@ internal fun walkGhost(document: Document): BigInteger {
     return lcm(steps)
 }
 
-internal fun lcm(numbers: List<Int>): BigInteger {
+fun lcm(numbers: List<Int>): BigInteger {
     return numbers.map { it.toBigInteger() }
         .reduce { acc, num -> (acc.multiply(num).divide(acc.gcd(num))) }
 }

@@ -4,7 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-internal fun detectFullNumber(plan: Plan, x: Int, y: Int): DetectNumberResult {
+fun detectFullNumber(plan: Plan, x: Int, y: Int): DetectNumberResult {
     require(plan.get(x, y).isDigit()) { "Function assumes it is called for a cell with digit" }
     var i = x
     while (plan.get(i, y).isDigit()) {
@@ -20,7 +20,7 @@ internal fun detectFullNumber(plan: Plan, x: Int, y: Int): DetectNumberResult {
     return DetectNumberResult(number.toInt(), firstPosition, y, number.length)
 }
 
-internal fun getAdjacentPositions(minX: Int, maxX: Int, minY: Int, maxY: Int): List<Pair<Int, Int>> {
+fun getAdjacentPositions(minX: Int, maxX: Int, minY: Int, maxY: Int): List<Pair<Int, Int>> {
     val resultList: MutableList<Pair<Int, Int>> = mutableListOf()
     for (x in minX..maxX) {
         for (y in minY..maxY) {
@@ -30,7 +30,7 @@ internal fun getAdjacentPositions(minX: Int, maxX: Int, minY: Int, maxY: Int): L
     return resultList
 }
 
-internal fun getAdjacentPositions(detectNumberResult: DetectNumberResult): List<Pair<Int, Int>> {
+fun getAdjacentPositions(detectNumberResult: DetectNumberResult): List<Pair<Int, Int>> {
     return getAdjacentPositions(
         detectNumberResult.firstPosition - 1,
         detectNumberResult.firstPosition + detectNumberResult.length,
@@ -39,13 +39,13 @@ internal fun getAdjacentPositions(detectNumberResult: DetectNumberResult): List<
     )
 }
 
-internal fun isNumberAdjacentToSymbol(plan: Plan, detectNumberResult: DetectNumberResult): Boolean {
+fun isNumberAdjacentToSymbol(plan: Plan, detectNumberResult: DetectNumberResult): Boolean {
     return getAdjacentPositions(detectNumberResult).any { position ->
         plan.containsSymbol(position.first, position.second)
     }
 }
 
-internal fun computeSumOfNumbersAdjacentToSymbol(plan: Plan): Int {
+fun computeSumOfNumbersAdjacentToSymbol(plan: Plan): Int {
     var sum = 0
     for (y in 0..<plan.getHeight()) {
         var x = 0
@@ -64,7 +64,7 @@ internal fun computeSumOfNumbersAdjacentToSymbol(plan: Plan): Int {
     return sum
 }
 
-internal fun computeSumOfGearRatios(plan: Plan): Long {
+fun computeSumOfGearRatios(plan: Plan): Long {
     var sum = 0L
     for (y in 0..<plan.getHeight()) {
         for (x in 0..<plan.getWidth()) {

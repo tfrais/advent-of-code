@@ -4,17 +4,17 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-internal fun calculatePart1(plan: Plan): Int {
+fun calculatePart1(plan: Plan): Int {
     return PipeCalculator.pipe(plan).size / 2
 }
 
-internal fun IntRange.isInOpenEndedRange(value: Int): Boolean =
+fun IntRange.isInOpenEndedRange(value: Int): Boolean =
     value > this.first && value < this.last
 
-internal fun <T> createGroupedMap(
+fun <T> createGroupedMap(
     pipe: List<T>,
     groupBySelector: (T) -> Int,
-    mapValueSelector: (T) -> Int
+    mapValueSelector: (T) -> Int,
 ): Map<Int, List<IntRange>> {
     return pipe.groupBy(groupBySelector)
         .mapValues {
@@ -25,7 +25,7 @@ internal fun <T> createGroupedMap(
         }
 }
 
-internal fun calculatePart2(plan: Plan): Int {
+fun calculatePart2(plan: Plan): Int {
     val pipe = PipeCalculator.pipe(plan)
 
     val yMap = createGroupedMap(pipe, { it.y }, { it.x })

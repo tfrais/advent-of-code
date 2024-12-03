@@ -1,6 +1,6 @@
 package cz.frais.aoc.year2023.day03
 
-internal class Plan(rawPlan: String) {
+class Plan(rawPlan: String) {
 
     companion object {
         private const val EMPTY_SYMBOL: Char = '.'

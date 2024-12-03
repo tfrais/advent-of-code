@@ -2,7 +2,7 @@ package cz.frais.aoc.year2024.day01
 
 import kotlin.math.abs
 
-internal fun parse(lines: List<String>): Pair<List<Int>, List<Int>> {
+fun parse(lines: List<String>): Pair<List<Int>, List<Int>> {
     val listLeft = mutableListOf<Int>()
     val listRight = mutableListOf<Int>()
     lines.forEach { line ->
@@ -13,7 +13,7 @@ internal fun parse(lines: List<String>): Pair<List<Int>, List<Int>> {
     return Pair(listLeft, listRight)
 }
 
-internal fun calculatePart1(lists: Pair<List<Int>, List<Int>>): Int {
+fun calculatePart1(lists: Pair<List<Int>, List<Int>>): Int {
     val sortedListLeft = lists.first.sorted()
     val sortedListRight = lists.second.sorted()
     var sumDistance = 0
@@ -23,7 +23,7 @@ internal fun calculatePart1(lists: Pair<List<Int>, List<Int>>): Int {
     return sumDistance
 }
 
-internal fun calculatePart2(lists: Pair<List<Int>, List<Int>>): Int {
+fun calculatePart2(lists: Pair<List<Int>, List<Int>>): Int {
     val rightFrequencyMap: Map<Int, Int> = lists.second.groupingBy { it }.eachCount()
     var similarityScore = 0
     lists.first.forEach { similarityScore += it * (rightFrequencyMap[it] ?: 0) }

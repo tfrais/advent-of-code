@@ -3,7 +3,7 @@ package cz.frais.aoc.year2023.day10
 import cz.frais.aoc.Position
 import cz.frais.aoc.Vector
 
-internal class Plan(rawPlan: String) {
+class Plan(rawPlan: String) {
 
     companion object {
 

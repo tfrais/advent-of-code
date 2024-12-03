@@ -7,7 +7,7 @@ private val logger = KotlinLogging.logger {}
 data class GameTurn(val colorMap: Map<String, Int>)
 data class Game(val id: Int, val turns: List<GameTurn>)
 
-internal fun parseGameTurn(rawTurn: String): GameTurn {
+fun parseGameTurn(rawTurn: String): GameTurn {
     val resultMap: MutableMap<String, Int> = mutableMapOf()
     for (rawColor in rawTurn.split(",").map { it.trim() }) {
         val parts = rawColor.split(" ").map { it.trim() }
@@ -16,7 +16,7 @@ internal fun parseGameTurn(rawTurn: String): GameTurn {
     return GameTurn(resultMap)
 }
 
-internal fun parseGame(rawGame: String): Game {
+fun parseGame(rawGame: String): Game {
     val parts = rawGame.split(":")
     val gameId = parts[0].removePrefix("Game ").trim().toInt()
     val gameTurns = parts[1].trim().split(";").map { turn ->
@@ -25,29 +25,29 @@ internal fun parseGame(rawGame: String): Game {
     return Game(gameId, gameTurns)
 }
 
-internal fun getGameMaxMap(game: Game): Map<String, Int> {
+fun getGameMaxMap(game: Game): Map<String, Int> {
     return game.turns.map { it.colorMap }
         .flatMap { it.entries }
         .groupBy({ it.key }, { it.value })
         .mapValues { (_, values) -> values.maxOrNull() ?: 0 }
 }
 
-internal fun isGamePossible(game: Game, expectedColors: Map<String, Int>): Boolean {
+fun isGamePossible(game: Game, expectedColors: Map<String, Int>): Boolean {
     return getGameMaxMap(game).all { (key, gameMaxValue) ->
         gameMaxValue <= (expectedColors[key] ?: return@all false)
     }
 }
 
-internal fun valueOfPossibleGames(games: List<Game>, expectedColors: Map<String, Int>): Int {
+fun valueOfPossibleGames(games: List<Game>, expectedColors: Map<String, Int>): Int {
     return games.filter { isGamePossible(it, expectedColors) }
         .sumOf { it.id }
 }
 
-internal fun powerOfGame(game: Game): Int {
+fun powerOfGame(game: Game): Int {
     return getGameMaxMap(game).values.reduce { acc, number -> acc * number }
 }
 
-internal fun powerOfGames(games: List<Game>): Int {
+fun powerOfGames(games: List<Game>): Int {
     return games.sumOf { powerOfGame(it) }
 }
 

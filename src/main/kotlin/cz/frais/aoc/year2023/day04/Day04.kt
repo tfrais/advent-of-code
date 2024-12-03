@@ -5,34 +5,34 @@ import kotlin.math.pow
 
 private val logger = KotlinLogging.logger {}
 
-internal fun parseNumbersFromCard(rawNumbers: String): Set<Int> {
+fun parseNumbersFromCard(rawNumbers: String): Set<Int> {
     return rawNumbers.trim()
         .replace(Regex("\\s+"), " ")
         .split(" ")
         .map { it.toInt() }.toSet()
 }
 
-internal fun parseCard(rawCard: String): Card {
+fun parseCard(rawCard: String): Card {
     val parts = rawCard.split(":")
     val cardId = parts[0].removePrefix("Card ").trim().toInt()
     val numberParts = parts[1].split("|")
     return Card(cardId, parseNumbersFromCard(numberParts[0]), parseNumbersFromCard(numberParts[1]))
 }
 
-internal fun calculateMatchingNumbers(card: Card): Int {
+fun calculateMatchingNumbers(card: Card): Int {
     return card.numbers.intersect(card.winningNumbers).size
 }
 
-internal fun calculatePoints(card: Card): Int {
+fun calculatePoints(card: Card): Int {
     val intersectSize = calculateMatchingNumbers(card)
     return if (intersectSize > 0) 2.0.pow(intersectSize - 1).toInt() else 0
 }
 
-internal fun calculatePoints(cards: List<Card>): Int {
+fun calculatePoints(cards: List<Card>): Int {
     return cards.sumOf { calculatePoints(it) }
 }
 
-internal fun calculatePart2(cards: List<Card>): Int {
+fun calculatePart2(cards: List<Card>): Int {
     val cardMap = cards.associateWith { 1 }.toSortedMap(compareBy { it.id })
     for (card in cardMap.keys) {
         val matchingNumbers = calculateMatchingNumbers(card)
