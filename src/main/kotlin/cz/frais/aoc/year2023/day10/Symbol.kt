@@ -1,16 +1,18 @@
 package cz.frais.aoc.year2023.day10
 
+import cz.frais.aoc.Vector
+
 internal enum class Symbol(
     val code: Char,
-    val moveVectors: List<MoveVector>
+    val vectors: List<Vector>,
 ) {
 
-    VERTICAL('|', listOf(MoveVector(0, -1), MoveVector(0, 1))),
-    HORIZONTAL('-', listOf(MoveVector(-1, 0), MoveVector(1, 0))),
-    NE_BEND('L', listOf(MoveVector(1, 0), MoveVector(0, -1))),
-    NW_BEND('J', listOf(MoveVector(-1, 0), MoveVector(0, -1))),
-    SE_BEND('F', listOf(MoveVector(1, 0), MoveVector(0, 1))),
-    SW_BEND('7', listOf(MoveVector(-1, 0), MoveVector(0, 1))),
+    VERTICAL('|', listOf(Vector(0, -1), Vector(0, 1))),
+    HORIZONTAL('-', listOf(Vector(-1, 0), Vector(1, 0))),
+    NE_BEND('L', listOf(Vector(1, 0), Vector(0, -1))),
+    NW_BEND('J', listOf(Vector(-1, 0), Vector(0, -1))),
+    SE_BEND('F', listOf(Vector(1, 0), Vector(0, 1))),
+    SW_BEND('7', listOf(Vector(-1, 0), Vector(0, 1))),
 
     GROUND('.', listOf()),
     START('S', listOf());

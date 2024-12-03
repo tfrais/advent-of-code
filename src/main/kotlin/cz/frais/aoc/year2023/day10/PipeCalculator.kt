@@ -1,9 +1,11 @@
 package cz.frais.aoc.year2023.day10
 
+import cz.frais.aoc.Position
+
 internal object PipeCalculator {
 
     fun nextPositions(currentPosition: Position, symbol: Symbol): List<Position> =
-        symbol.moveVectors.map { it.apply(currentPosition) }
+        symbol.vectors.map { it.apply(currentPosition) }
 
     private fun positionsLeadingTo(plan: Plan, destinationPosition: Position): List<Position> {
         return plan.adjacentPositions(destinationPosition)

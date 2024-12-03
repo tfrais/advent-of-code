@@ -1,3 +1,3 @@
-package cz.frais.aoc.year2023.day10
+package cz.frais.aoc
 
 internal data class Position(val x: Int, val y: Int)

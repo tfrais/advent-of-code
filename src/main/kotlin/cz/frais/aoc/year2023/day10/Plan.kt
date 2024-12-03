@@ -1,5 +1,8 @@
 package cz.frais.aoc.year2023.day10
 
+import cz.frais.aoc.Position
+import cz.frais.aoc.Vector
+
 internal class Plan(rawPlan: String) {
 
     companion object {
@@ -26,7 +29,7 @@ internal class Plan(rawPlan: String) {
         (-1..1).flatMap { diffX ->
             (-1..1).mapNotNull { diffY ->
                 if (diffX != 0 || diffY != 0) {
-                    MoveVector(diffX, diffY)
+                    Vector(diffX, diffY)
                         .apply(position)
                         .takeIf { inPlan(it) }
                 } else null

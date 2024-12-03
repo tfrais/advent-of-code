@@ -1,15 +1,10 @@
 package cz.frais.aoc.year2023.day10
 
+import cz.frais.aoc.Position
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class Day10Test {
-
-    @Test
-    fun testMoveVectorApply() {
-        assertThat(MoveVector(1, -1).apply(Position(5, 5)))
-            .usingRecursiveComparison().isEqualTo(Position(6, 4))
-    }
 
     @Test
     fun testPlanAdjacentPositions() {
