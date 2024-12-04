@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertNull
 
 class TableTest {
 
@@ -13,7 +14,7 @@ class TableTest {
     }
 
     @Test
-    fun testValueAtSuccess() {
+    fun testValueAt() {
         assertThat(SIMPLE_TABLE.valueAt(Position(1, 0))).isEqualTo('B')
         assertThat(SIMPLE_TABLE.valueAt(Position(0, 1))).isEqualTo('D')
     }
@@ -73,6 +74,51 @@ class TableTest {
                 Position(0, 1),
                 Position(1, 1)
             )
+    }
+
+    @Test
+    fun testPositionsFollowingVector() {
+        assertThat(SIMPLE_TABLE.positionsFollowingVector(Position(0, 0), Vector(1, 0), 3))
+            .containsExactly(
+                Position(0, 0),
+                Position(1, 0),
+                Position(2, 0)
+            )
+
+        assertThat(SIMPLE_TABLE.positionsFollowingVector(Position(0, 0), Vector(1, 1), 2))
+            .containsExactly(
+                Position(0, 0),
+                Position(1, 1)
+            )
+    }
+
+    @Test
+    fun testPositionsFollowingVectorOutsideTable() {
+        assertThrows<IllegalStateException> {
+            SIMPLE_TABLE
+                .positionsFollowingVector(
+                    Position(0, 0),
+                    Vector(1, 0),
+                    10,
+                    true
+                )
+        }
+
+        assertNull(
+            SIMPLE_TABLE
+                .positionsFollowingVector(
+                    Position(0, 0),
+                    Vector(1, 0),
+                    10,
+                    false
+                )
+        )
+    }
+
+    @Test
+    fun testValuesFollowingVectorOutsideTable() {
+        assertThat(SIMPLE_TABLE.valuesFollowingVector(Position(0, 0), Vector(1, 0), 3))
+            .containsExactly('A', 'B', 'C')
     }
 
 }

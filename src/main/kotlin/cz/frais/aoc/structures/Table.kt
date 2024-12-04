@@ -45,4 +45,34 @@ class Table<T>(rawTable: String, charToValueTypeMapper: (Char) -> T) {
             }
         }.toSet()
 
+    fun positionsFollowingVector(
+        initialPosition: Position,
+        vector: Vector,
+        length: Int,
+        shouldFailIfOutsideOfPlan: Boolean = true,
+    ): List<Position>? {
+        val result = mutableListOf<Position>()
+        var currentPosition = initialPosition
+        repeat(length) { _ ->
+            if (!inTable(currentPosition)) {
+                return if (!shouldFailIfOutsideOfPlan) null
+                else error("Following vector would lead outside of the table at $currentPosition")
+            }
+            result.add(currentPosition)
+            currentPosition = vector.apply(currentPosition)
+        }
+        return result
+    }
+
+    fun valuesFollowingVector(
+        initialPosition: Position,
+        vector: Vector,
+        length: Int,
+        shouldFailIfOutsideOfPlan: Boolean = true,
+    ): List<T>? {
+        return positionsFollowingVector(
+            initialPosition, vector, length, shouldFailIfOutsideOfPlan
+        )?.map { valueAt(it) }
+    }
+
 }
