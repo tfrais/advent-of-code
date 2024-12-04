@@ -4,19 +4,16 @@ import cz.frais.aoc.AdventOfCodeDaySolution
 import cz.frais.aoc.structures.Position
 import cz.frais.aoc.structures.Table
 import cz.frais.aoc.structures.Vector
+import cz.frais.aoc.structures.Vector.Companion.withNegativeVectors
 
 object Year2024Day04 : AdventOfCodeDaySolution {
 
     private val PART1_VECTORS = listOf(
         Vector(1, 0),
-        Vector(-1, 0),
         Vector(0, 1),
-        Vector(0, -1),
         Vector(1, 1),
         Vector(-1, -1),
-        Vector(1, -1),
-        Vector(-1, 1)
-    )
+    ).withNegativeVectors()
 
     // initial position, vector to move
     private val PART2_VECTOR_MAP = listOf(
