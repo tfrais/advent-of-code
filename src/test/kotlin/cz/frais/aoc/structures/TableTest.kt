@@ -129,4 +129,15 @@ class TableTest {
             .containsExactly('A', 'B', 'C')
     }
 
+    @Test
+    fun testWithReplacedValues() {
+        assertThat(
+            SIMPLE_TABLE.withReplacedValues(
+                mapOf(Position(1, 0) to 'K', Position(2, 1) to 'L')
+            )
+        ).usingRecursiveComparison().isEqualTo(
+            Table("AKC\nDEL") { it }
+        )
+    }
+
 }

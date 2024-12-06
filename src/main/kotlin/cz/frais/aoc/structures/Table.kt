@@ -1,6 +1,6 @@
 package cz.frais.aoc.structures
 
-class Table<T>(rawTable: String, charToValueTypeMapper: (Char) -> T) {
+class Table<T>(private val array: List<List<T>>) {
 
     companion object {
 
@@ -16,7 +16,7 @@ class Table<T>(rawTable: String, charToValueTypeMapper: (Char) -> T) {
 
     }
 
-    private val array: List<List<T>> = parse(rawTable, charToValueTypeMapper)
+    constructor(rawTable: String, charToValueTypeMapper: (Char) -> T) : this(parse(rawTable, charToValueTypeMapper))
 
     fun height(): Int = array.size
     fun width(): Int = array.first().size
@@ -80,6 +80,18 @@ class Table<T>(rawTable: String, charToValueTypeMapper: (Char) -> T) {
         return positionsFollowingVector(
             initialPosition, vector, length, shouldFailIfOutsideOfPlan
         )?.map { valueAt(it) }
+    }
+
+    fun withReplacedValues(replacementMap: Map<Position, T>): Table<T> {
+        val updatedArray = array.map { it.toList() }.toMutableList()
+
+        replacementMap.forEach { (position, newValue) ->
+            updatedArray[position.y] = updatedArray[position.y].toMutableList().apply {
+                this[position.x] = newValue
+            }
+        }
+
+        return Table(updatedArray)
     }
 
 }
