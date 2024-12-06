@@ -1,7 +1,6 @@
-package cz.frais.aoc.year2024
+package cz.frais.aoc.year2024.day05
 
 
-import cz.frais.aoc.year2024.day05.Parser
 import cz.frais.aoc.year2024.day05.Year2024Day05.computePart1
 import cz.frais.aoc.year2024.day05.Year2024Day05.computePart2
 import cz.frais.aoc.year2024.day05.Year2024Day05.isSortedCorrectly
