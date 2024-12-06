@@ -28,6 +28,13 @@ class Table<T>(rawTable: String, charToValueTypeMapper: (Char) -> T) {
         return array[position.y][position.x]
     }
 
+    fun findValue(value: T): List<Position> =
+        array.indices.flatMap { y ->
+            array[y].indices.mapNotNull { x ->
+                Position(x, y).takeIf { valueAt(it) == value }
+            }
+        }
+
     fun inTable(position: Position): Boolean {
         return position.x in array.first().indices
                 && position.y in array.indices

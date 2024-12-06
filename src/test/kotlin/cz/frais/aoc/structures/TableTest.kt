@@ -46,6 +46,14 @@ class TableTest {
     }
 
     @Test
+    fun testFindValue() {
+        assertThat(SIMPLE_TABLE.findValue('Z')).isEmpty()
+        assertThat(SIMPLE_TABLE.findValue('F')).containsExactly(Position(2, 1))
+        assertThat((Table("ABA") { it }).findValue('A'))
+            .containsExactly(Position(0, 0), Position(2, 0))
+    }
+
+    @Test
     fun testInTable() {
         assertTrue(SIMPLE_TABLE.inTable(Position(0, 0)))
         assertFalse(SIMPLE_TABLE.inTable(Position(-1, 0)))
