@@ -7,12 +7,13 @@ class MapWalkthrough(private val table: Table<MapElement>) {
 
     var currentPosition: Position
     var currentDirection: Direction
-    val visitedPositionDirection: MutableList<Pair<Position, Direction>>
+    val visitedPositionDirection: LinkedHashSet<Pair<Position, Direction>>
 
     init {
         this.currentPosition = table.findValue(MapElement.CURRENT_POSITION_FACING_NORTH).single()
         this.currentDirection = table.valueAt(currentPosition).direction!!
-        this.visitedPositionDirection = mutableListOf(Pair(currentPosition, currentDirection))
+        this.visitedPositionDirection = LinkedHashSet()
+        this.visitedPositionDirection.add(Pair(currentPosition, currentDirection))
     }
 
     enum class MoveResult { OK, EXIT, LOOP }
