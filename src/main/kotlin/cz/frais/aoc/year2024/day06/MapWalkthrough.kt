@@ -3,9 +3,8 @@ package cz.frais.aoc.year2024.day06
 import cz.frais.aoc.structures.Position
 import cz.frais.aoc.structures.Table
 
-class MapWalkthrough(input: String) {
+class MapWalkthrough(private val table: Table<MapElement>) {
 
-    val table: Table<MapElement> = Table(input) { MapElement.fromChar(it) }
     var currentPosition: Position
     var currentDirection: Direction
     val visitedPositionDirection: MutableList<Pair<Position, Direction>>
