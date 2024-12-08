@@ -7,12 +7,41 @@ import cz.frais.aoc.structures.Vector
 
 object Year2024Day08 : AdventOfCodeDaySolution {
 
-    fun antinodePositions(antenna1: Position, antenna2: Position): Set<Position> {
+    fun antinodePositionsForPart1(antenna1: Position, antenna2: Position): Set<Position> {
         val diffVector = Vector(antenna2.x - antenna1.x, antenna2.y - antenna1.y)
         return setOf(
             diffVector.negative().apply(antenna1),
             diffVector.apply(diffVector.apply(antenna1))
         )
+    }
+
+    fun positionsFollowingVector(
+        initialPosition: Position,
+        vector: Vector,
+        table: Table<Char>,
+    ): Set<Position> {
+        val resultSet = mutableSetOf<Position>()
+        var currentPosition = initialPosition
+        while (table.inTable(currentPosition)) {
+            resultSet.add(currentPosition)
+            currentPosition = vector.apply(currentPosition)
+        }
+        return resultSet.toSet()
+    }
+
+    fun antinodePositionsForPart2(
+        antenna1: Position,
+        antenna2: Position,
+        table: Table<Char>,
+    ): Set<Position> {
+        val resultSet = mutableSetOf<Position>()
+        resultSet.addAll(setOf(antenna1, antenna2))
+        val diffVector = Vector(antenna2.x - antenna1.x, antenna2.y - antenna1.y)
+        setOf(diffVector, diffVector.negative())
+            .forEach { vector ->
+                resultSet.addAll(positionsFollowingVector(antenna1, vector, table))
+            }
+        return resultSet.toSet()
     }
 
     fun buildAntennaFrequencyPositionMap(table: Table<Char>): Map<Char, Set<Position>> {
@@ -36,22 +65,32 @@ object Year2024Day08 : AdventOfCodeDaySolution {
         }.toSet()
     }
 
-    override fun computePart1(input: String): Long {
+    fun compute(
+        input: String,
+        antinodePositionsFunction: (Table<Char>, Pair<Position, Position>) -> Set<Position>,
+    ): Long {
         val table = Table(input) { it }
         val allAntinodePositions = mutableSetOf<Position>()
-        val antennaFrequencyPositionMap = buildAntennaFrequencyPositionMap(table)
-        antennaFrequencyPositionMap.values.forEach { frequencyPositions ->
+        buildAntennaFrequencyPositionMap(table).values.forEach { frequencyPositions ->
             allAntinodePositions.addAll(
                 buildPairs(frequencyPositions)
-                    .flatMap { antinodePositions(it.first, it.second) }
+                    .flatMap { antinodePositionsFunction(table, it) }
                     .filter { table.inTable(it) }
             )
         }
         return allAntinodePositions.size.toLong()
     }
 
+    override fun computePart1(input: String): Long {
+        return compute(input) { _, pair ->
+            antinodePositionsForPart1(pair.first, pair.second)
+        }
+    }
+
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        return compute(input) { table, pair ->
+            antinodePositionsForPart2(pair.first, pair.second, table)
+        }
     }
 
 }
