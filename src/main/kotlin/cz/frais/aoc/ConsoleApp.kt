@@ -14,7 +14,6 @@ object ConsoleApp {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        solution.computePart1(input)
         logger.info { "Part 1 result is ${solution.computePart1(input)}." }
         logger.info { "Part 2 result is ${solution.computePart2(input)}." }
     }
