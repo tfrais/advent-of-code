@@ -20,6 +20,12 @@ object Year2024Day09 : AdventOfCodeDaySolution {
         return array.take(arrayIndex).toTypedArray()
     }
 
+    private fun <T> Array<T>.nextIndex(fromIndex: Int, valuePredicate: (T) -> Boolean): Int =
+        (fromIndex until this.size).firstOrNull { valuePredicate(this[it]) } ?: -1
+
+    private fun <T> Array<T>.previousIndex(fromIndex: Int, valuePredicate: (T) -> Boolean): Int =
+        (fromIndex downTo 0).firstOrNull { valuePredicate(this[it]) } ?: -1
+
     override fun computePart1(input: String): Long {
         val array = loadIntoExpandedArray(input)
 
@@ -29,14 +35,8 @@ object Year2024Day09 : AdventOfCodeDaySolution {
         while (freeSpaceIndex < rightBlockIndex) {
             array[freeSpaceIndex] = array[rightBlockIndex]
             array[rightBlockIndex] = FREE_SPACE_VALUE
-
-            while (freeSpaceIndex < array.size && array[freeSpaceIndex] != FREE_SPACE_VALUE) {
-                freeSpaceIndex++
-            }
-
-            while (rightBlockIndex >= 0 && array[rightBlockIndex] == FREE_SPACE_VALUE) {
-                rightBlockIndex--
-            }
+            freeSpaceIndex = array.nextIndex(freeSpaceIndex) { it == FREE_SPACE_VALUE }
+            rightBlockIndex = array.previousIndex(rightBlockIndex) { it != FREE_SPACE_VALUE }
         }
 
         return array.take(freeSpaceIndex).withIndex()
