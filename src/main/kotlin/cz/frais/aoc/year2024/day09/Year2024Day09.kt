@@ -40,7 +40,7 @@ object Year2024Day09 : AdventOfCodeDaySolution {
         }
 
         return array.take(freeSpaceIndex).withIndex()
-            .sumOf { (index, value) -> index * value }.toLong()
+            .sumOf { (index, value) -> index * value.toLong() }
     }
 
     override fun computePart2(input: String): Long {
