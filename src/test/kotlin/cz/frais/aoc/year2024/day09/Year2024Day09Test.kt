@@ -2,6 +2,7 @@ package cz.frais.aoc.year2024.day09
 
 import cz.frais.aoc.year2024.day09.Year2024Day09.computePart1
 import cz.frais.aoc.year2024.day09.Year2024Day09.computePart2
+import cz.frais.aoc.year2024.day09.Year2024Day09.freeSpaceRanges
 import cz.frais.aoc.year2024.day09.Year2024Day09.loadIntoExpandedArray
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -21,6 +22,12 @@ class Year2024Day09Test {
         assertThat(computePart1("1234")).isEqualTo(6)
         assertThat(computePart1("12345")).isEqualTo(60)
         assertThat(computePart1("2333133121414131402")).isEqualTo(1928)
+    }
+
+    @Test
+    fun testFreeSpaceRanges() {
+        assertThat(freeSpaceRanges(loadIntoExpandedArray("123")))
+            .containsExactly(IntRange(1, 2))
     }
 
     @Test

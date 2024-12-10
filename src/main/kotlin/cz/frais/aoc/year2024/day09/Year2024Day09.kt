@@ -43,6 +43,21 @@ object Year2024Day09 : AdventOfCodeDaySolution {
             .sumOf { (index, value) -> index * value.toLong() }
     }
 
+    fun freeSpaceRanges(array: Array<Int>): List<IntRange> {
+        val resultList = mutableListOf<IntRange>()
+        var i = 0
+
+        while (i >= 0) {
+            i = array.nextIndex(i) { it == FREE_SPACE_VALUE }
+            if (i == -1) break
+            val j = array.nextIndex(i + 1) { it != FREE_SPACE_VALUE }
+            resultList.add(i until j)
+            i = j
+        }
+
+        return resultList.toList()
+    }
+
     override fun computePart2(input: String): Long {
         val array = loadIntoExpandedArray(input)
         var blockEndIndex = array.indexOfLast { it != FREE_SPACE_VALUE }
@@ -51,23 +66,17 @@ object Year2024Day09 : AdventOfCodeDaySolution {
             val blockStartIndex = array.previousIndex(blockEndIndex) { it != array[blockEndIndex] } + 1
             val blockSize = blockEndIndex - blockStartIndex + 1
 
-            var freeSpaceStartIndex = array.indexOfFirst { it == FREE_SPACE_VALUE }
-            var moved = false
-            while (freeSpaceStartIndex < blockStartIndex && !moved) {
-                val freeSpaceEndIndex = array.nextIndex(freeSpaceStartIndex) { it != FREE_SPACE_VALUE } - 1
-                val freeSpaceSize = freeSpaceEndIndex - freeSpaceStartIndex + 1
-
-                if (freeSpaceSize >= blockSize) {
-                    for (i in 0 until blockSize) {
-                        val fileId = array[blockEndIndex]
-                        array[freeSpaceStartIndex + i] = fileId
-                        array[blockStartIndex + i] = FREE_SPACE_VALUE
-                    }
-                    moved = true
+            val freeSpaceRange = freeSpaceRanges(array)
+                .firstOrNull { range ->
+                    range.last - range.first + 1 >= blockSize && range.last < blockStartIndex
                 }
 
-                freeSpaceStartIndex += freeSpaceSize + 1
-
+            if (freeSpaceRange != null) {
+                val fileId = array[blockEndIndex]
+                for (i in 0 until blockSize) {
+                    array[freeSpaceRange.first + i] = fileId
+                    array[blockStartIndex + i] = FREE_SPACE_VALUE
+                }
             }
 
             blockEndIndex -= blockSize
