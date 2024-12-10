@@ -44,7 +44,37 @@ object Year2024Day09 : AdventOfCodeDaySolution {
     }
 
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        val array = loadIntoExpandedArray(input)
+        var blockEndIndex = array.indexOfLast { it != FREE_SPACE_VALUE }
+
+        while (blockEndIndex >= 1) {
+            val blockStartIndex = array.previousIndex(blockEndIndex) { it != array[blockEndIndex] } + 1
+            val blockSize = blockEndIndex - blockStartIndex + 1
+
+            var freeSpaceStartIndex = array.indexOfFirst { it == FREE_SPACE_VALUE }
+            var moved = false
+            while (freeSpaceStartIndex < blockStartIndex && !moved) {
+                val freeSpaceEndIndex = array.nextIndex(freeSpaceStartIndex) { it != FREE_SPACE_VALUE } - 1
+                val freeSpaceSize = freeSpaceEndIndex - freeSpaceStartIndex + 1
+
+                if (freeSpaceSize >= blockSize) {
+                    for (i in 0 until blockSize) {
+                        val fileId = array[blockEndIndex]
+                        array[freeSpaceStartIndex + i] = fileId
+                        array[blockStartIndex + i] = FREE_SPACE_VALUE
+                    }
+                    moved = true
+                }
+
+                freeSpaceStartIndex += freeSpaceSize + 1
+
+            }
+
+            blockEndIndex -= blockSize
+        }
+
+        return array.withIndex()
+            .sumOf { (index, value) -> index * (if (value > 0) value.toLong() else 0) }
     }
 
 }
