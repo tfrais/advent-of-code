@@ -14,7 +14,7 @@ object Year2024Day11 : AdventOfCodeDaySolution {
     @Suppress("MagicNumber")
     private val MULTIPLIER_2024 = BigInteger.valueOf(2024)
 
-    private val cache: MutableMap<Pair<BigInteger, Int>, Int> = mutableMapOf()
+    private val cache: MutableMap<Pair<BigInteger, Int>, Long> = mutableMapOf()
 
     private fun nextValues(value: BigInteger): List<BigInteger> =
         when {
@@ -47,10 +47,10 @@ object Year2024Day11 : AdventOfCodeDaySolution {
         return graph
     }
 
-    fun Graph<BigInteger, DefaultEdge>.numberOfPaths(vertex: BigInteger, steps: Int): Int =
+    fun Graph<BigInteger, DefaultEdge>.numberOfPaths(vertex: BigInteger, steps: Int): Long =
         cache.getOrPut(vertex to steps) {
             val outgoingEdges = this.outgoingEdgesOf(vertex)
-            if (steps == 1) outgoingEdges.size else outgoingEdges
+            if (steps == 1) outgoingEdges.size.toLong() else outgoingEdges
                 .map { edge -> this.getEdgeTarget(edge) }
                 .sumOf { target -> this.numberOfPaths(target, steps - 1) }
         }
