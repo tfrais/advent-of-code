@@ -1,9 +1,6 @@
 package cz.frais.aoc.year2024.day11
 
 import cz.frais.aoc.AdventOfCodeDaySolution
-import org.jgrapht.Graph
-import org.jgrapht.graph.DefaultEdge
-import org.jgrapht.graph.SimpleDirectedGraph
 import java.math.BigInteger
 
 object Year2024Day11 : AdventOfCodeDaySolution {
@@ -31,41 +28,20 @@ object Year2024Day11 : AdventOfCodeDaySolution {
             else -> listOf(value.multiply(MULTIPLIER_2024))
         }
 
-    fun prepareGraph(initialVertexes: List<BigInteger>): Graph<BigInteger, DefaultEdge> {
-        val graph = SimpleDirectedGraph<BigInteger, DefaultEdge>(DefaultEdge::class.java)
-        initialVertexes.forEach { graph.addVertex(it) }
-        while (true) {
-            val leaves = graph.vertexSet().filter { graph.outDegreeOf(it) == 0 }
-            if (leaves.isEmpty()) break
-            leaves.forEach { leaf ->
-                nextValues(leaf).forEach { nextValue ->
-                    graph.addVertex(nextValue)
-                    graph.addEdge(leaf, nextValue)
-                }
-            }
+    fun compute(input: BigInteger, steps: Int): Long =
+        cache.getOrPut(input to steps) {
+            if (steps == 1) nextValues(input).size.toLong()
+            else nextValues(input).sumOf { compute(it, steps - 1) }
         }
-        return graph
-    }
-
-    fun Graph<BigInteger, DefaultEdge>.numberOfPaths(vertex: BigInteger, steps: Int): Long =
-        cache.getOrPut(vertex to steps) {
-            val outgoingEdges = this.outgoingEdgesOf(vertex)
-            if (steps == 1) outgoingEdges.size.toLong() else outgoingEdges
-                .map { edge -> this.getEdgeTarget(edge) }
-                .sumOf { target -> this.numberOfPaths(target, steps - 1) }
-        }
-
-    fun compute(stones: List<BigInteger>, numberOfBlinks: Int): Long {
-        val graph = prepareGraph(stones)
-        return stones.sumOf { graph.numberOfPaths(it, numberOfBlinks) }.toLong()
-    }
 
     override fun computePart1(input: String): Long {
-        return compute(input.split(" ").map { BigInteger(it) }, NUMBER_OF_BLINKS_PART1)
+        return input.split(" ")
+            .sumOf { compute(BigInteger(it), NUMBER_OF_BLINKS_PART1) }
     }
 
     override fun computePart2(input: String): Long {
-        return compute(input.split(" ").map { BigInteger(it) }, NUMBER_OF_BLINKS_PART2)
+        return input.split(" ")
+            .sumOf { compute(BigInteger(it), NUMBER_OF_BLINKS_PART2) }
     }
 
 }
