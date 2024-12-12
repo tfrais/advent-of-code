@@ -1,6 +1,8 @@
 package cz.frais.aoc
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlin.reflect.KFunction1
+import kotlin.system.measureTimeMillis
 
 object ConsoleApp {
 
@@ -14,8 +16,16 @@ object ConsoleApp {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        logger.info { "Part 1 result is ${solution.computePart1(input)}." }
-        logger.info { "Part 2 result is ${solution.computePart2(input)}." }
+        fun runPart(i: Int, function: KFunction1<String, Long>) {
+            var result: Long?
+            val duration = measureTimeMillis {
+                result = function(input)
+            }
+            logger.info { "Part $i result: $result, executed in $duration ms" }
+        }
+
+        runPart(1, solution::computePart1)
+        runPart(2, solution::computePart2)
     }
 
 }
