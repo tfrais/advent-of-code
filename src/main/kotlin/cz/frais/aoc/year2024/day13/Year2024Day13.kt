@@ -1,50 +1,40 @@
 package cz.frais.aoc.year2024.day13
 
 import cz.frais.aoc.AdventOfCodeDaySolution
-import cz.frais.aoc.structures.Position
 
 object Year2024Day13 : AdventOfCodeDaySolution {
 
-    private const val MAX_STEPS_PART1 = 200
+    const val MAX_STEPS_PART1 = 100
+    const val OFFSET_PART2 = 10000000000000L
 
-    private fun buttonsPrice(buttonsA: Int, buttonsB: Int) =
-        buttonsA * Button.BUTTON_A.price + buttonsB * Button.BUTTON_B.price
+    private fun solveA(machine: Machine): Long {
+        val buttonA = machine.buttonVectors[Button.BUTTON_A]!!
+        val buttonB = machine.buttonVectors[Button.BUTTON_B]!!
+        return (machine.priceY * buttonB.diffX - machine.priceX * buttonB.diffY) /
+                (buttonA.diffY * buttonB.diffX - buttonA.diffX * buttonB.diffY)
+    }
 
-    private fun buttonsDestination(buttonsA: Int, buttonsB: Int, machine: Machine) =
-        Position(
-            x = machine.buttonVectors[Button.BUTTON_A]!!.diffX * buttonsA +
-                    machine.buttonVectors[Button.BUTTON_B]!!.diffX * buttonsB,
-            y = machine.buttonVectors[Button.BUTTON_A]!!.diffY * buttonsA +
-                    machine.buttonVectors[Button.BUTTON_B]!!.diffY * buttonsB
+    private fun solveB(machine: Machine): Long {
+        val buttonA = machine.buttonVectors[Button.BUTTON_A]!!
+        val buttonB = machine.buttonVectors[Button.BUTTON_B]!!
+        return (machine.priceX - solveA(machine) * buttonA.diffX) / buttonB.diffX
+    }
+
+    fun leastPrice(machine: Machine, maxSteps: Int? = null, offset: Long = 0): Long? {
+        val machineWithOffset = Machine(
+            machine.buttonVectors,
+            machine.priceX + offset,
+            machine.priceY + offset
         )
-
-    fun leastPrice(machine: Machine, maxSteps: Int? = null): Long? {
-        var steps = 1
-        while (true) {
-            if (steps > (maxSteps ?: Int.MAX_VALUE)) {
-                return null
-            }
-
-            var buttonsB = steps
-            var buttonsA = 0
-
-            val minHopX = machine.buttonVectors.values.map { vector -> vector.diffX }.min()
-            val minHopY = machine.buttonVectors.values.map { vector -> vector.diffY }.min()
-
-            if (minHopX * steps > machine.prizePosition.x || minHopY * steps > machine.prizePosition.y) {
-                return null
-            }
-
-            repeat(steps) {
-                if (buttonsDestination(buttonsA, buttonsB, machine) == machine.prizePosition) {
-                    return buttonsPrice(buttonsA, buttonsB).toLong()
-                }
-                buttonsB--
-                buttonsA++
-            }
-
-            steps++
+        val buttonsA = solveA(machineWithOffset)
+        val buttonsB = solveB(machineWithOffset)
+        if (buttonsA < 1 || buttonsB < 1) {
+            return null
         }
+        if (maxSteps != null && (buttonsA > maxSteps || buttonsB > maxSteps)) {
+            return null
+        }
+        return buttonsA * Button.BUTTON_A.price + buttonsB * Button.BUTTON_B.price
     }
 
     override fun computePart1(input: String): Long {
@@ -53,7 +43,8 @@ object Year2024Day13 : AdventOfCodeDaySolution {
     }
 
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        return Parser.parse(input)
+            .sumOf { machine -> leastPrice(machine, null, OFFSET_PART2) ?: 0 }
     }
 
 }

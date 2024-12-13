@@ -1,6 +1,5 @@
 package cz.frais.aoc.year2024.day13
 
-import cz.frais.aoc.structures.Position
 import cz.frais.aoc.structures.Vector
 
 object Parser {
@@ -28,10 +27,8 @@ object Parser {
                         val vectorY = match.groups["vectorY"]!!.value.toInt()
                         button to Vector(vectorX, vectorY)
                     },
-                    Position(
-                        prizeMatch.groups["priceX"]!!.value.toInt(),
-                        prizeMatch.groups["priceY"]!!.value.toInt()
-                    )
+                    prizeMatch.groups["priceX"]!!.value.toLong(),
+                    prizeMatch.groups["priceY"]!!.value.toLong()
                 )
             }
 

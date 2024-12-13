@@ -1,7 +1,7 @@
 package cz.frais.aoc.year2024.day13
 
-import cz.frais.aoc.structures.Position
 import cz.frais.aoc.structures.Vector
+import cz.frais.aoc.year2024.day13.Year2024Day13.MAX_STEPS_PART1
 import cz.frais.aoc.year2024.day13.Year2024Day13.computePart1
 import cz.frais.aoc.year2024.day13.Year2024Day13.leastPrice
 import org.assertj.core.api.Assertions.assertThat
@@ -20,7 +20,7 @@ class Year2024Day13Test {
                     Button.BUTTON_A to Vector(69, 23),
                     Button.BUTTON_B to Vector(27, 71)
                 ),
-                Position(18641, 10279)
+                18641, 10279
             )
         )
     }
@@ -32,9 +32,21 @@ class Year2024Day13Test {
                 Button.BUTTON_A to Vector(94, 34),
                 Button.BUTTON_B to Vector(22, 67)
             ),
-            Position(8400, 5400)
+            8400, 5400
         )
-        assertThat(leastPrice(machine, 200)).isEqualTo(280)
+        assertThat(leastPrice(machine, MAX_STEPS_PART1)).isEqualTo(280)
+    }
+
+    @Test
+    fun testLeastPriceReturnsNull() {
+        val machine = Machine(
+            mapOf(
+                Button.BUTTON_A to Vector(26, 66),
+                Button.BUTTON_B to Vector(67, 21)
+            ),
+            12748, 12176
+        )
+        assertThat(leastPrice(machine, MAX_STEPS_PART1)).isNull()
     }
 
     @Test
