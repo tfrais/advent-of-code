@@ -21,6 +21,9 @@ object Year2024Day13 : AdventOfCodeDaySolution {
     }
 
     fun leastPrice(machine: Machine, maxSteps: Int? = null, offset: Long = 0): Long? {
+        val buttonA = machine.buttonVectors[Button.BUTTON_A]!!
+        val buttonB = machine.buttonVectors[Button.BUTTON_B]!!
+
         val machineWithOffset = Machine(
             machine.buttonVectors,
             machine.priceX + offset,
@@ -28,7 +31,15 @@ object Year2024Day13 : AdventOfCodeDaySolution {
         )
         val buttonsA = solveA(machineWithOffset)
         val buttonsB = solveB(machineWithOffset)
-        if (buttonsA < 1 || buttonsB < 1) {
+
+        if (buttonsA * buttonA.diffX + buttonsB * buttonB.diffX != machineWithOffset.priceX) {
+            return null
+        }
+        if (buttonsA * buttonA.diffY + buttonsB * buttonB.diffY != machineWithOffset.priceY) {
+            return null
+        }
+
+        if (buttonsA < 0 || buttonsB < 0) {
             return null
         }
         if (maxSteps != null && (buttonsA > maxSteps || buttonsB > maxSteps)) {
