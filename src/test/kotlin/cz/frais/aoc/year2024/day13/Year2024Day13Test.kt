@@ -11,7 +11,7 @@ class Year2024Day13Test {
 
     @Test
     fun testParser() {
-        val input = object {}.javaClass.getResource("/2024/day13_test_input_part1.txt")!!.readText()
+        val input = object {}.javaClass.getResource("/2024/day13_test_input.txt")!!.readText()
         val parsedMachines = Parser.parse(input)
         assertThat(parsedMachines).hasSize(4)
         assertThat(parsedMachines.last()).usingRecursiveComparison().isEqualTo(
@@ -34,12 +34,12 @@ class Year2024Day13Test {
             ),
             Position(8400, 5400)
         )
-        assertThat(leastPrice(machine)).isEqualTo(280)
+        assertThat(leastPrice(machine, 200)).isEqualTo(280)
     }
 
     @Test
     fun testComputePart1() {
-        val input = object {}.javaClass.getResource("/2024/day13_test_input_part1.txt")!!.readText()
+        val input = object {}.javaClass.getResource("/2024/day13_test_input.txt")!!.readText()
         assertThat(computePart1(input)).isEqualTo(480)
     }
 

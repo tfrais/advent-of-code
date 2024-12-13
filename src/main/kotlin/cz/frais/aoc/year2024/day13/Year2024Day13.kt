@@ -5,31 +5,51 @@ import cz.frais.aoc.structures.Position
 
 object Year2024Day13 : AdventOfCodeDaySolution {
 
-    private const val MAX_BUTTONS = 200
+    private const val MAX_STEPS_PART1 = 200
 
-    private fun buttonsPrice(buttons: List<Button>) = buttons.sumOf { it.price }
+    private fun buttonsPrice(buttonsA: Int, buttonsB: Int) =
+        buttonsA * Button.BUTTON_A.price + buttonsB * Button.BUTTON_B.price
 
-    private fun buttonsDestination(buttons: List<Button>, machine: Machine): Position =
-        buttons.fold(Position(0, 0)) { position, button ->
-            machine.buttonVectors[button]!!.apply(position)
-        }
+    private fun buttonsDestination(buttonsA: Int, buttonsB: Int, machine: Machine) =
+        Position(
+            x = machine.buttonVectors[Button.BUTTON_A]!!.diffX * buttonsA +
+                    machine.buttonVectors[Button.BUTTON_B]!!.diffX * buttonsB,
+            y = machine.buttonVectors[Button.BUTTON_A]!!.diffY * buttonsA +
+                    machine.buttonVectors[Button.BUTTON_B]!!.diffY * buttonsB
+        )
 
-    fun leastPrice(machine: Machine): Long? {
-        for (steps in 1..MAX_BUTTONS) {
-            val buttonCombination = MutableList(steps) { Button.BUTTON_B }
-            for (i in buttonCombination.indices) {
-                if (buttonsDestination(buttonCombination, machine) == machine.prizePosition) {
-                    return buttonsPrice(buttonCombination).toLong()
-                }
-                buttonCombination[i] = Button.BUTTON_A
+    fun leastPrice(machine: Machine, maxSteps: Int? = null): Long? {
+        var steps = 1
+        while (true) {
+            if (steps > (maxSteps ?: Int.MAX_VALUE)) {
+                return null
             }
+
+            var buttonsB = steps
+            var buttonsA = 0
+
+            val minHopX = machine.buttonVectors.values.map { vector -> vector.diffX }.min()
+            val minHopY = machine.buttonVectors.values.map { vector -> vector.diffY }.min()
+
+            if (minHopX * steps > machine.prizePosition.x || minHopY * steps > machine.prizePosition.y) {
+                return null
+            }
+
+            repeat(steps) {
+                if (buttonsDestination(buttonsA, buttonsB, machine) == machine.prizePosition) {
+                    return buttonsPrice(buttonsA, buttonsB).toLong()
+                }
+                buttonsB--
+                buttonsA++
+            }
+
+            steps++
         }
-        return null
     }
 
     override fun computePart1(input: String): Long {
         return Parser.parse(input)
-            .sumOf { machine -> leastPrice(machine) ?: 0 }
+            .sumOf { machine -> leastPrice(machine, MAX_STEPS_PART1) ?: 0 }
     }
 
     override fun computePart2(input: String): Long {
