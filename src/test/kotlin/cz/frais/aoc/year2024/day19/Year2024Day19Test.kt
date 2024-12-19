@@ -25,17 +25,9 @@ class Year2024Day19Test {
     @Test
     fun testCompute() {
         val towelPatterns = listOf("r", "wr", "b", "g", "bwu", "rb", "gb", "br")
-
-        assertThat(compute(towelPatterns, "ubwu")).isEmpty()
-
-        assertThat(compute(towelPatterns, "bwurrg")).containsExactly(
-            listOf("bwu", "r", "r", "g")
-        )
-
-        assertThat(compute(towelPatterns, "bwurrg")).containsExactly(
-            listOf("bwu", "r", "r", "g")
-        )
-
+        assertThat(compute(towelPatterns, "ubwu")).isEqualTo(0)
+        assertThat(compute(towelPatterns, "bwurrg")).isEqualTo(1)
+        assertThat(compute(towelPatterns, "rrbgbr")).isEqualTo(6)
     }
 
     @Test
