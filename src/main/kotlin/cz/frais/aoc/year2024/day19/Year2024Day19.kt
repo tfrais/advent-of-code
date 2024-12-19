@@ -4,16 +4,23 @@ import cz.frais.aoc.AdventOfCodeDaySolution
 
 object Year2024Day19 : AdventOfCodeDaySolution {
 
-    private val solvableCache = mutableMapOf<String, Boolean>()
+    private val solvableCache = mutableMapOf<String, List<List<String>>>()
+
+    fun compute(towelPatterns: List<String>, design: String): List<List<String>> {
+        return solvableCache.getOrPut(design) {
+            if (design.isEmpty()) return@getOrPut listOf(emptyList())
+
+            towelPatterns.filter { design.startsWith(it) }
+                .flatMap { towelPattern ->
+                    compute(towelPatterns, design.drop(towelPattern.length)).map { subList ->
+                        listOf(towelPattern) + subList
+                    }
+                }
+        }
+    }
 
     fun isSolvable(towelPatterns: List<String>, design: String): Boolean =
-        solvableCache.getOrPut(design) {
-            if (design.isEmpty() || design in towelPatterns) true
-            else towelPatterns.any { towelPattern ->
-                design.startsWith(towelPattern) && isSolvable(towelPatterns, design.drop(towelPattern.length))
-            }
-        }
-
+        compute(towelPatterns, design).isNotEmpty()
 
     override fun computePart1(input: String): Long {
         solvableCache.clear()
@@ -24,7 +31,11 @@ object Year2024Day19 : AdventOfCodeDaySolution {
     }
 
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        solvableCache.clear()
+        val lines = input.lines()
+        val towelPatterns = lines.first().split(",").map { it.trim() }
+        val designs = lines.drop(2)
+        return designs.sumOf { compute(towelPatterns, it).size }.toLong()
     }
 
 }
