@@ -1,7 +1,6 @@
 package cz.frais.aoc.year2024.day22
 
 import cz.frais.aoc.year2024.day22.Year2024Day22.computePart2
-import cz.frais.aoc.year2024.day22.Year2024Day22.findChangesPriceInPart2Sequence
 import cz.frais.aoc.year2024.day22.Year2024Day22.generatePart2Sequence
 import cz.frais.aoc.year2024.day22.Year2024Day22.nextSecretNumber
 import org.assertj.core.api.Assertions.assertThat
@@ -33,13 +32,6 @@ class Year2024Day22Test {
             Year2024Day22.Part2SequenceElement(4, -1),
             Year2024Day22.Part2SequenceElement(4, 0)
         )
-    }
-
-    @Test
-    fun testFindChangesPriceInPart2Sequence() {
-        val sequence = generatePart2Sequence(123, 10)
-        assertThat(findChangesPriceInPart2Sequence(listOf(-1, -1, 0, 2), sequence)).isEqualTo(6)
-        assertThat(findChangesPriceInPart2Sequence(listOf(1, 2, 3, 4), sequence)).isNull()
     }
 
     @Test

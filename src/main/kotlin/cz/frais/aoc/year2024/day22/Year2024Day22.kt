@@ -1,13 +1,10 @@
 package cz.frais.aoc.year2024.day22
 
 import cz.frais.aoc.AdventOfCodeDaySolution
-import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.*
 
 @Suppress("MagicNumber")
 object Year2024Day22 : AdventOfCodeDaySolution {
-
-    private val logger = KotlinLogging.logger {}
 
     fun nextSecretNumber(secretNumber: Long, nTimes: Int): Long {
         var result = secretNumber
@@ -47,34 +44,28 @@ object Year2024Day22 : AdventOfCodeDaySolution {
         return resultList.toList()
     }
 
-    fun findChangesPriceInPart2Sequence(changes: List<Int>, sequence: List<Part2SequenceElement>): Int? {
-        val windowedSequence = sequence.map { it.priceChange }.windowed(4)
-        val priceIndex = windowedSequence.indexOf(changes)
-        return if (priceIndex != -1) sequence[priceIndex + 3].price else null
+    private fun generateChangesToPriceMap(sequence: List<Part2SequenceElement>): Map<List<Int>, Int> {
+        val windows = sequence.windowed(4)
+        val resultMap = mutableMapOf<List<Int>, Int>()
+        windows.forEachIndexed { index, window ->
+            resultMap.computeIfAbsent(window.map { it.priceChange }) {
+                sequence[index + 3].price
+            }
+        }
+        return resultMap.toMap()
     }
 
-    fun generateCombinations(range: IntRange, size: Int): List<List<Int>> =
-        if (size == 0) listOf(emptyList())
-        else range.flatMap { element ->
-            generateCombinations(range, size - 1).map { combination ->
-                listOf(element) + combination
-            }
-        }
-
     override fun computePart1(input: String): Long =
-        input.lines().map { it.toLong() }
-            .sumOf { nextSecretNumber(it, 2000) }
+        input.lines().map { it.toLong() }.sumOf { nextSecretNumber(it, 2000) }
 
     override fun computePart2(input: String): Long {
-        val inputSequences = input.lines().map { it.toLong() }.map { initialSecretNumber ->
-            generatePart2Sequence(initialSecretNumber, 2000)
-        }
+        val changesToPriceMap = input.lines()
+            .map { line -> generatePart2Sequence(line.toLong(), 2000) }
+            .map { sequence -> generateChangesToPriceMap(sequence) }
+
         var mostBananas: Long = Long.MIN_VALUE
-        for (changes in generateCombinations(-9..9, 4)) {
-            if (changes.drop(2) == listOf(-9, -9)) logger.info { "$changes, $mostBananas" }
-            val bananasSum = inputSequences.sumOf { sequence ->
-                findChangesPriceInPart2Sequence(changes, sequence)?.toLong() ?: 0
-            }
+        for (changes in changesToPriceMap.flatMap { it.keys }.distinct()) {
+            val bananasSum = changesToPriceMap.sumOf { map -> map[changes]?.toLong() ?: 0 }
             if (bananasSum > mostBananas) mostBananas = bananasSum
         }
         return mostBananas
