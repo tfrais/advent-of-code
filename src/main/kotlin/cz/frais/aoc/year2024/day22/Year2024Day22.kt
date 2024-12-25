@@ -45,11 +45,10 @@ object Year2024Day22 : AdventOfCodeDaySolution {
     }
 
     private fun generateChangesToPriceMap(sequence: List<Part2SequenceElement>): Map<List<Int>, Int> {
-        val windows = sequence.windowed(4)
         val resultMap = mutableMapOf<List<Int>, Int>()
-        windows.forEachIndexed { index, window ->
+        sequence.windowed(4).forEach { window ->
             resultMap.computeIfAbsent(window.map { it.priceChange }) {
-                sequence[index + 3].price
+                window.last().price
             }
         }
         return resultMap.toMap()
