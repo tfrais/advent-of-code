@@ -9,10 +9,10 @@ object ConsoleApp {
     private val logger = KotlinLogging.logger {}
 
     private val solution: AdventOfCodeDaySolution =
-        cz.frais.aoc.year2025.day05.Year2025Day05
+        cz.frais.aoc.year2025.day06.Year2025Day06
 
     private val input: String =
-        object {}.javaClass.getResource("/2025/day05_input.txt")!!.readText()
+        object {}.javaClass.getResource("/2025/day06_input.txt")!!.readText()
 
     @JvmStatic
     fun main(args: Array<String>) {
