@@ -25,7 +25,25 @@ object Year2025Day01 : AdventOfCodeDaySolution {
     }
 
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        var position = 50;
+        var password = 0;
+        for (rotation in input.lines().map { Rotation.fromString(it) }) {
+            var distance = rotation.distance
+            while (distance > 0) {
+                position = rotation.direction.operation(position, 1)
+                if (position == 100) {
+                    position = 0;
+                } else if (position == -1) {
+                    position = 99
+                }
+                if (position == 0) {
+                    password++
+                }
+                distance--;
+            }
+        }
+
+        return password.toLong();
     }
 
 }
