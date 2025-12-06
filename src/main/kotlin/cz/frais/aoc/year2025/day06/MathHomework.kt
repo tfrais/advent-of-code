@@ -3,12 +3,12 @@ package cz.frais.aoc.year2025.day06
 data class MathHomework(
     val operands: List<List<Long>>,
     val operations: List<(Long, Long) -> Long>,
-    val initialAccumulatorValue: List<Long>,
+    val initialAccumulatorValues: List<Long>,
 ) {
 
     companion object {
 
-        fun fromString(input: String): MathHomework {
+        fun fromStringPart1(input: String): MathHomework {
             val operands = input.lines().dropLast(1).map { line ->
                 line.split(Regex("\\s+")).filter { it.isNotEmpty() }
                     .map { it.toLong() }
@@ -33,6 +33,10 @@ data class MathHomework(
                 }.toList()
 
             return MathHomework(operands, operations, initialAccumulatorValues)
+        }
+
+        fun fromStringPart2(input: String): MathHomework {
+            TODO("Not yet implemented")
         }
 
     }
