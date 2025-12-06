@@ -10,7 +10,7 @@ object Year2025Day02 : AdventOfCodeDaySolution {
             .map { it[0]..it[1] }
     }
 
-    fun isValid(number: Long): Boolean {
+    fun isValidPart1(number: Long): Boolean {
         val charArray = number.toString().toCharArray()
         if (charArray.size % 2 != 0) {
             return true
@@ -23,11 +23,24 @@ object Year2025Day02 : AdventOfCodeDaySolution {
         return false
     }
 
+    fun isValidPart2(number: Long): Boolean {
+        val numberString = number.toString()
+        for (testLength in 1..numberString.length / 2) {
+            val testString = numberString.subSequence(0, testLength)
+            // {2,} pattern meaning testString repeated at least twice
+            val testPattern = Regex("^($testString){2,}$")
+            if (numberString.matches(testPattern)) {
+                return false
+            }
+        }
+        return true
+    }
+
     override fun computePart1(input: String): Long {
         var result = 0L
         for (range in parseRanges(input)) {
             for (number in range) {
-                if (!isValid(number)) {
+                if (!isValidPart1(number)) {
                     result += number
                 }
             }
@@ -36,7 +49,15 @@ object Year2025Day02 : AdventOfCodeDaySolution {
     }
 
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        var result = 0L
+        for (range in parseRanges(input)) {
+            for (number in range) {
+                if (!isValidPart2(number)) {
+                    result += number
+                }
+            }
+        }
+        return result
     }
 
 }
