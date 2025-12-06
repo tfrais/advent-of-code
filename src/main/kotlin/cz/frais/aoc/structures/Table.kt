@@ -94,4 +94,8 @@ class Table<T>(private val array: List<List<T>>) {
         return Table(updatedArray)
     }
 
+    fun getRow(index: Int): List<T> = array[index]
+
+    fun getColumn(index: Int): List<T> = array.map { row -> row[index] }
+
 }
