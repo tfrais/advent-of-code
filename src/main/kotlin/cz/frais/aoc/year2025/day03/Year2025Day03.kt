@@ -20,42 +20,22 @@ object Year2025Day03 : AdventOfCodeDaySolution {
         return max;
     }
 
-    fun produceNumber(batteryBank: String, indices: List<Int>): Long {
-        var place = 1L;
-        var result = 0L;
-        for (digitIndex in indices.reversed()) {
-            result += place * batteryBank[digitIndex].digitToInt()
-            place *= 10
-        }
-        return result
-    }
-
     fun maximumJoltagePart2(batteryBank: String): Long {
-        var max = 0L
-        val batteryBankLength = batteryBank.length
-        val indices = (0 until PART2_DIGIT_COUNT).toMutableList()
+        val selectedDigits = mutableListOf<Pair<Int, Int>>()
+        var currentStartIndex = 0
 
-        while (indices[0] < batteryBankLength - PART2_DIGIT_COUNT) {
-
-            val number = produceNumber(batteryBank, indices)
-            if (number > max) {
-                max = number
-            }
-
-            for (i in (PART2_DIGIT_COUNT - 1) downTo 0) {
-                if (indices[i] < batteryBankLength - PART2_DIGIT_COUNT + i) {
-                    indices[i] = indices[i] + 1
-                    // reset all subsequent indices
-                    for (j in i + 1 until PART2_DIGIT_COUNT) {
-                        indices[j] = indices[j - 1] + 1
-                    }
-                    break
-                }
-            }
-
+        while (selectedDigits.size < PART2_DIGIT_COUNT) {
+            val digitsToSelect = PART2_DIGIT_COUNT - selectedDigits.size
+            val windowEnd = batteryBank.length - digitsToSelect + 1
+            val searchPrefix = batteryBank.substring(currentStartIndex, windowEnd)
+            val maxDigitChar = searchPrefix.max()
+            val nextDigitIndexInPrefix = searchPrefix.indexOf(maxDigitChar)
+            val nextDigitOriginalIndex = currentStartIndex + nextDigitIndexInPrefix
+            selectedDigits.add(Pair(maxDigitChar.toString().toInt(), nextDigitOriginalIndex))
+            currentStartIndex = nextDigitOriginalIndex + 1
         }
 
-        return max
+        return selectedDigits.map { it.first }.joinToString(separator = "").toLong()
     }
 
     override fun computePart1(input: String): Long =
