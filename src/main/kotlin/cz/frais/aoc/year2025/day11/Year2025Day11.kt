@@ -1,7 +1,6 @@
 package cz.frais.aoc.year2025.day11
 
 import cz.frais.aoc.AdventOfCodeDaySolution
-import java.util.LinkedList
 
 object Year2025Day11 : AdventOfCodeDaySolution {
 
@@ -14,29 +13,43 @@ object Year2025Day11 : AdventOfCodeDaySolution {
         return resultMap.toMap()
     }
 
-    override fun computePart1(input: String): Long {
-        val resultMap = loadMap(input)
-        val incompletePaths = LinkedList<List<String>>()
-        incompletePaths.add(listOf("you"))
-        var result = 0L
+    fun countPaths(
+        map: Map<String, Set<String>>,
+        start: String,
+        target: String,
+        memo: MutableMap<Pair<String, String>, Long> = mutableMapOf()
+    ): Long {
+        val key = start to target
+        memo[key]?.let { return it }
 
-        while (incompletePaths.isNotEmpty()) {
-            val currentPath = incompletePaths.poll()
-            if (currentPath.last() == "out") {
-                result++
-            } else {
-                resultMap[currentPath.last()]?.forEach { nextStep ->
-                    if (nextStep !in currentPath) {
-                        incompletePaths.add(currentPath + nextStep)
-                    }
-                }
-            }
+        if (start == target) return 1
+
+        var total = 0L
+        for (next in map[start].orEmpty()) {
+            total += countPaths(map, next, target, memo)
         }
-        return result
+
+        memo[key] = total
+        return total
+    }
+
+    override fun computePart1(input: String): Long {
+        val map = loadMap(input)
+        val memoize = mutableMapOf<Pair<String, String>, Long>()
+
+        return countPaths(map, "you", "out", memoize)
     }
 
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        val map = loadMap(input)
+        val memoize = mutableMapOf<Pair<String, String>, Long>()
+
+        return countPaths(map, "svr", "fft", memoize) *
+                countPaths(map, "fft", "dac", memoize) *
+                countPaths(map, "dac", "out", memoize) +
+                countPaths(map, "svr", "dac", memoize) *
+                countPaths(map, "dac", "fft", memoize) *
+                countPaths(map, "fft", "out", memoize)
     }
 
 }
