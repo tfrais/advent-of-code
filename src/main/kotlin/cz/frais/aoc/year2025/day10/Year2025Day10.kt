@@ -4,10 +4,18 @@ import cz.frais.aoc.AdventOfCodeDaySolution
 
 object Year2025Day10 : AdventOfCodeDaySolution {
 
-    fun applySchematics(currentLights: List<Boolean>, schematics: List<Int>): List<Boolean> {
+    fun applySchematicsPart1(currentLights: List<Boolean>, schematics: List<Int>): List<Boolean> {
         val result = currentLights.toMutableList()
         for (index in schematics) {
             result[index] = !result[index]
+        }
+        return result.toList()
+    }
+
+    fun applySchematicsPart2(currentJoltage: List<Int>, schematics: List<Int>): List<Int> {
+        val result = currentJoltage.toMutableList()
+        for (index in schematics) {
+            result[index] = result[index] + 1
         }
         return result.toList()
     }
@@ -25,7 +33,7 @@ object Year2025Day10 : AdventOfCodeDaySolution {
             while (!foundSolution) {
                 val currentPath = paths.removeFirst()
                 for (schematics in machine.wiring) {
-                    val newLights = applySchematics(currentPath.last(), schematics)
+                    val newLights = applySchematicsPart1(currentPath.last(), schematics)
                     if (newLights == machine.diagram) {
                         foundSolution = true
                         currentSteps = currentPath.size
@@ -46,7 +54,38 @@ object Year2025Day10 : AdventOfCodeDaySolution {
     }
 
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        val manual = input.lines().map { Machine.fromString(it) }
+        var result = 0L
+
+        for (machine in manual) {
+            var foundSolution = false
+            val paths = mutableListOf<List<List<Int>>>()
+            val visited = mutableSetOf<List<Int>>()
+            paths.add(mutableListOf(List(machine.joltageRequirements.size) { 0 }))
+            var currentSteps = 0
+            while (!foundSolution) {
+                val currentPath = paths.removeFirst()
+                for (schematics in machine.wiring) {
+                    val newJoltage = applySchematicsPart2(currentPath.last(), schematics)
+                    if (newJoltage == machine.joltageRequirements) {
+                        foundSolution = true
+                        currentSteps = currentPath.size
+                        break
+                    }
+                    if (newJoltage !in visited) {
+                        if (!machine.joltageRequirements.indices.any { i -> newJoltage[i] > machine.joltageRequirements[i] }) {
+                            val newPath = currentPath.toMutableList()
+                            newPath.add(newJoltage)
+                            paths.add(newPath)
+                            visited.add(newJoltage)
+                        }
+                    }
+                }
+            }
+            result += currentSteps
+        }
+
+        return result
     }
 
 }
