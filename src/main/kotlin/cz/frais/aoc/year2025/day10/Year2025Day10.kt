@@ -1,6 +1,7 @@
 package cz.frais.aoc.year2025.day10
 
 import cz.frais.aoc.AdventOfCodeDaySolution
+import org.ojalgo.optimisation.ExpressionsBasedModel
 
 object Year2025Day10 : AdventOfCodeDaySolution {
 
@@ -8,14 +9,6 @@ object Year2025Day10 : AdventOfCodeDaySolution {
         val result = currentLights.toMutableList()
         for (index in schematics) {
             result[index] = !result[index]
-        }
-        return result.toList()
-    }
-
-    fun applySchematicsPart2(currentJoltage: List<Int>, schematics: List<Int>): List<Int> {
-        val result = currentJoltage.toMutableList()
-        for (index in schematics) {
-            result[index] = result[index] + 1
         }
         return result.toList()
     }
@@ -53,36 +46,48 @@ object Year2025Day10 : AdventOfCodeDaySolution {
         return result
     }
 
+    fun solveByIntegerLinearProgramming(
+        vectors: List<IntArray>,
+        target: IntArray
+    ): Long {
+
+        val numDimensions = target.size
+        val model = ExpressionsBasedModel()
+
+        val xVars = vectors.mapIndexed { i, _ ->
+            model.addVariable("x_$i")
+                .integer(true)
+                .lower(0)
+                .weight(1.0)
+        }
+
+        // Add equality constraints for each counter/dimension
+        for (d in 0 until numDimensions) {
+            val expr = model.addExpression("dim_$d").level(target[d].toDouble())
+            for (i in vectors.indices) {
+                expr.set(xVars[i], vectors[i][d].toDouble())
+            }
+        }
+
+        val result = model.minimise()
+
+        if (!result.state.isOptimal) {
+            throw IllegalStateException("No feasible solution found: ${result.state}")
+        }
+
+        return xVars.sumOf { v -> result.get(model.indexOf(v).toLong()).toLong() }
+    }
+
     override fun computePart2(input: String): Long {
         val manual = input.lines().map { Machine.fromString(it) }
         var result = 0L
 
         for (machine in manual) {
-            var foundSolution = false
-            val paths = mutableListOf<List<List<Int>>>()
-            val visited = mutableSetOf<List<Int>>()
-            paths.add(mutableListOf(List(machine.joltageRequirements.size) { 0 }))
-            var currentSteps = 0
-            while (!foundSolution) {
-                val currentPath = paths.removeFirst()
-                for (schematics in machine.wiring) {
-                    val newJoltage = applySchematicsPart2(currentPath.last(), schematics)
-                    if (newJoltage == machine.joltageRequirements) {
-                        foundSolution = true
-                        currentSteps = currentPath.size
-                        break
-                    }
-                    if (newJoltage !in visited) {
-                        if (!machine.joltageRequirements.indices.any { i -> newJoltage[i] > machine.joltageRequirements[i] }) {
-                            val newPath = currentPath.toMutableList()
-                            newPath.add(newJoltage)
-                            paths.add(newPath)
-                            visited.add(newJoltage)
-                        }
-                    }
-                }
-            }
-            result += currentSteps
+            val dimension = machine.joltageRequirements.size
+            result += solveByIntegerLinearProgramming(
+                vectors = machine.wiring.map { schematics -> IntArray(dimension) { if (it in schematics) 1 else 0 } },
+                target = machine.joltageRequirements.toIntArray()
+            )
         }
 
         return result
