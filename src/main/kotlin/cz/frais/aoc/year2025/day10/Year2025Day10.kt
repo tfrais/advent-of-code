@@ -75,7 +75,8 @@ object Year2025Day10 : AdventOfCodeDaySolution {
             throw IllegalStateException("No feasible solution found: ${result.state}")
         }
 
-        return xVars.sumOf { v -> result.get(model.indexOf(v).toLong()).toLong() }
+        // beware of rounding errors during conversion from result.get (BigDecimal) to Long
+        return xVars.sumOf { v -> result.get(model.indexOf(v).toLong()).setScale(0, java.math.RoundingMode.HALF_UP).longValueExact() }
     }
 
     override fun computePart2(input: String): Long {
