@@ -27,7 +27,20 @@ object Year2015Day08 : AdventOfCodeDaySolution {
     }
 
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        var originalCharsTotal = 0L
+        var encodedCharsTotal = 0L
+        for (line in input.lines()) {
+            encodedCharsTotal += 2 // added outer quotes
+            for (char in line.filter { !it.isWhitespace() }) {
+                originalCharsTotal++
+                if (char in listOf('"', '\\')) {
+                    encodedCharsTotal += 2
+                } else {
+                    encodedCharsTotal++
+                }
+            }
+        }
+        return encodedCharsTotal - originalCharsTotal
     }
 
 }
