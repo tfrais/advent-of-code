@@ -8,7 +8,7 @@ class Year2015Day10Test {
 
     @Test
     fun testExpandPart1() {
-//        assertThat(expandPart1("1")).isEqualTo("11")
+        assertThat(expandPart1("1")).isEqualTo("11")
         assertThat(expandPart1("11")).isEqualTo("21")
         assertThat(expandPart1("21")).isEqualTo("1211")
         assertThat(expandPart1("1211")).isEqualTo("111221")
