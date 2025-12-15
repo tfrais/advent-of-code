@@ -50,8 +50,7 @@ object Year2015Day13 : AdventOfCodeDaySolution {
         return happiness
     }
 
-    override fun computePart1(input: String): Long {
-        val map = prepareMap(input)
+    private fun computeMax(map: Map<Pair<String, String>, Int>): Long {
         var max = Int.MIN_VALUE
         for (sittingOrder in permutations(distinctPeople(map))) {
             val happiness = computeHappiness(sittingOrder, map)
@@ -62,8 +61,15 @@ object Year2015Day13 : AdventOfCodeDaySolution {
         return max.toLong()
     }
 
+    override fun computePart1(input: String): Long = computeMax(prepareMap(input))
+
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        val map = prepareMap(input).toMutableMap()
+        distinctPeople(map).forEach { name ->
+            map["myself" to name] = 0
+            map[name to "myself"] = 0
+        }
+        return computeMax(map.toMap())
     }
 
 }
