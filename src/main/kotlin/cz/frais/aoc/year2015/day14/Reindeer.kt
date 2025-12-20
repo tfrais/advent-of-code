@@ -7,7 +7,8 @@ data class Reindeer(
     val restingInterval: Int,
     var distanceTravelled: Int = 0,
     var flyingSeconds: Int = 0,
-    var restingSeconds: Int = 0
+    var restingSeconds: Int = 0,
+    var score: Int = 0
 ) {
 
     companion object {
@@ -24,6 +25,19 @@ data class Reindeer(
             )
         }
 
+    }
+
+    fun fly() {
+        if (flyingSeconds < flyingInterval) {
+            distanceTravelled += speed
+            flyingSeconds++
+        } else if (restingSeconds < restingInterval) {
+            restingSeconds++
+            if (restingSeconds == restingInterval) {
+                flyingSeconds = 0
+                restingSeconds = 0
+            }
+        }
     }
 
 }
