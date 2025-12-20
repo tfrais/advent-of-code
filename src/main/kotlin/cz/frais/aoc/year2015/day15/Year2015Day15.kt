@@ -5,8 +5,6 @@ import cz.frais.aoc.AdventOfCodeDaySolution
 object Year2015Day15 : AdventOfCodeDaySolution {
 
     private fun score(ingredients: List<Ingredient>, cookie: List<Int>): Long {
-        require(ingredients.size == cookie.size)
-
         var capacity = 0L
         var durability = 0L
         var flavor = 0L
@@ -22,7 +20,10 @@ object Year2015Day15 : AdventOfCodeDaySolution {
         return (if (capacity > 0) capacity else 0) * (if (durability > 0) durability else 0) * (if (flavor > 0) flavor else 0) * (if (texture > 0) texture else 0)
     }
 
-    override fun computePart1(input: String): Long {
+    private fun scoreCalories(ingredients: List<Ingredient>, cookie: List<Int>) =
+        ingredients.zip(cookie).sumOf { (ingredient, amount) -> ingredient.calories * amount }
+
+    fun compute(input: String, calories: Int?): Long {
         val ingredients = input.lines().map { Ingredient.fromString(it) }
 
         var maxScore = 0L
@@ -36,7 +37,7 @@ object Year2015Day15 : AdventOfCodeDaySolution {
                 }
             } else {
                 val score = score(ingredients, current)
-                if (score > maxScore) {
+                if (score > maxScore && calories?.let { scoreCalories(ingredients, current) == it } ?: true) {
                     maxScore = score
                 }
             }
@@ -45,8 +46,8 @@ object Year2015Day15 : AdventOfCodeDaySolution {
         return maxScore
     }
 
-    override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
-    }
+    override fun computePart1(input: String) = compute(input, null)
+
+    override fun computePart2(input: String) = compute(input, 500)
 
 }
