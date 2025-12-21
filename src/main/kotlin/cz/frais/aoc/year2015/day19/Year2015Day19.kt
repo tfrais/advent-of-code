@@ -26,8 +26,43 @@ object Year2015Day19 : AdventOfCodeDaySolution {
         return molecules.size.toLong()
     }
 
+    fun newWords(original: String, replacement: Pair<String, String>): Set<String> {
+        val result = mutableSetOf<String>()
+        var index = original.indexOf(replacement.first)
+
+        while (index >= 0) {
+            val newText =
+                original.take(index) + replacement.second + original.substring(index + replacement.first.length)
+            result.add(newText)
+            index = original.indexOf(replacement.first, index + 1)
+        }
+
+        return result
+    }
+
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        val parsedInput = parseInput(input)
+        val map = mutableMapOf("e" to 0)
+        val toProcess = mutableSetOf("e")
+        while (parsedInput.string !in map) {
+            val current = toProcess.first()
+            toProcess.remove(current)
+            val currentDistance = map[current]!!
+            for (transition in parsedInput.transitions) {
+                for (newWord in newWords(current, transition)) {
+                    if (newWord !in map) {
+                        toProcess += newWord
+                        map[newWord] = currentDistance + 1
+                    } else {
+                        if (map[newWord]!! > currentDistance + 1) {
+                            map[newWord] = currentDistance + 1
+                        }
+                    }
+                }
+            }
+        }
+
+        return map[parsedInput.string]!!.toLong()
     }
 
 }
