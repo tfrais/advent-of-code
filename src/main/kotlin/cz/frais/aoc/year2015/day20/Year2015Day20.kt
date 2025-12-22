@@ -9,8 +9,8 @@ object Year2015Day20 : AdventOfCodeDaySolution {
         var i = 1L
         while (i * i <= n) {
             if (n % i == 0L) {
-                result += i * 10
-                if (i != n / i) result += (n / i) * 10
+                result += i
+                if (i != n / i) result += (n / i)
             }
             i++
         }
@@ -18,7 +18,7 @@ object Year2015Day20 : AdventOfCodeDaySolution {
     }
 
     override fun computePart1(input: String): Long {
-        val target = input.toLong()
+        val target = input.toLong() / 10
         var n = 1
         var presents = 0L
         while (presents < target) {
@@ -29,7 +29,25 @@ object Year2015Day20 : AdventOfCodeDaySolution {
     }
 
     override fun computePart2(input: String): Long {
-        TODO("Not yet implemented")
+        val target = input.toInt()
+        val limit = target / 11
+        val presents = IntArray(limit + 1)
+
+        for (elf in 1..limit) {
+            var count = 0
+            var house = elf
+            while (house <= limit && count < 50) {
+                presents[house] += elf * 11
+                house += elf
+                count++
+            }
+        }
+
+        for (i in presents.indices) {
+            if (presents[i] >= target) return i.toLong()
+        }
+
+        error("No solution found")
     }
 
 }
