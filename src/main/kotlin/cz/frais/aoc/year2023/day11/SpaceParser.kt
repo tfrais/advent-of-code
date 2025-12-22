@@ -7,7 +7,7 @@ object SpaceParser {
     private const val GALAXY_SYMBOL = '#'
 
     fun parse(input: String): Space {
-        val rawSpace: List<List<Char>> = input.split("\n")
+        val rawSpace: List<List<Char>> = input.lines()
             .map { line -> line.toCharArray().toList() }
 
         require(rawSpace.map { it.size }.distinct().size == 1) {

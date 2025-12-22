@@ -18,7 +18,7 @@ object Year2015Day02 : AdventOfCodeDaySolution {
                 dimensions.toList().reduce { acc, number -> acc * number }
     }
 
-    private fun inputToDimensionTriple(input: String) = input.split("\n")
+    private fun inputToDimensionTriple(input: String) = input.lines()
         .map { it.split(DIMENSIONS_SEPARATOR).map { part -> part.toLong() } }
         .map { (l, w, h) -> Triple(l, w, h) }
 

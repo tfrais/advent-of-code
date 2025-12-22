@@ -21,8 +21,7 @@ object Year2023Day06 : AdventOfCodeDaySolution {
 
     override fun computePart1(input: String): Long {
         return numberOfWays(
-            input.split("\n")
-                .map { it.split(" ") }
+            input.lines().map { it.split(" ") }
                 .map { Race(it.first().toLong(), it.last().toLong()) }
                 .toList()
                 .map { (it) }

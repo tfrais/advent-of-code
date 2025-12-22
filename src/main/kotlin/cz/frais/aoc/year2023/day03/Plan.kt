@@ -10,7 +10,7 @@ class Plan(rawPlan: String) {
 
     init {
         val array: MutableList<List<Char>> = mutableListOf()
-        for (line in rawPlan.split("\n")) {
+        for (line in rawPlan.lines()) {
             array.add(line.toList())
             check(array.map { it.size }.distinct().size == 1) { "Inconsistent width of the plan" }
         }

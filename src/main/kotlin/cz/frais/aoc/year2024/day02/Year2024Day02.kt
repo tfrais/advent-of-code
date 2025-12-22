@@ -10,8 +10,7 @@ object Year2024Day02 : AdventOfCodeDaySolution {
     private const val DIFFERENCE_TOLERANCE_MAX = 3
 
     fun parse(input: String): List<List<Int>> {
-        return input.split("\n")
-            .map { line -> line.split(" ").map { it.toInt() } }
+        return input.lines().map { line -> line.split(" ").map { it.toInt() } }
     }
 
     fun isSafe(report: List<Int>): Boolean {

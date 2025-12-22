@@ -8,7 +8,7 @@ class Parser {
     }
 
     fun parse(input: String): Document {
-        val lines = input.split("\n").filter { it.isNotBlank() }
+        val lines = input.lines().filter { it.isNotBlank() }
         val nodeMap = mutableMapOf<String, Pair<String, String>>()
 
         for (line in lines.drop(1)) {

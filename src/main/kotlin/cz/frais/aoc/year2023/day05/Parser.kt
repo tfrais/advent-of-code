@@ -9,7 +9,7 @@ class Parser {
     }
 
     fun parse(input: String, areInitialElementsRanges: Boolean): ParserResult {
-        val rawLines = input.split("\n").filter { it.isNotBlank() }
+        val rawLines = input.lines().filter { it.isNotBlank() }
         val firstLineSplit = rawLines.first().split(":")
         val rawElementCategory = firstLineSplit.first().trim()
         val initialElementCategory = if (rawElementCategory == "seeds") "seed" else rawElementCategory

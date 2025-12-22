@@ -8,8 +8,7 @@ class Plan(rawPlan: String) {
     companion object {
 
         private fun parse(rawPlan: String): List<List<Symbol>> {
-            return rawPlan.split("\n")
-                .map { line -> line.toCharArray().map { Symbol.fromChar(it) } }
+            return rawPlan.lines().map { line -> line.toCharArray().map { Symbol.fromChar(it) } }
         }
 
     }

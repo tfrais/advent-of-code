@@ -5,7 +5,7 @@ class Table<T>(private val array: List<List<T>>) {
     companion object {
 
         fun <T> parse(rawPlan: String, charToValueTypeMapper: (Char) -> T): List<List<T>> {
-            val lines = rawPlan.split("\n")
+            val lines = rawPlan.lines()
             require(lines.map { it.length }.distinct().size == 1) {
                 "Inconsistent width of the table"
             }

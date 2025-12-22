@@ -8,7 +8,7 @@ object Year2024Day07 : AdventOfCodeDaySolution {
     val ALLOWED_OPERATORS_PART2 = Operator.entries.toSet()
 
     private fun compute(input: String, allowedOperators: Set<Operator>): Long {
-        return input.split("\n")
+        return input.lines()
             .map { Equation.fromString(it, allowedOperators) }
             .filter { equation -> equation.operatorsSolvingEquation().isNotEmpty() }
             .sumOf { it.targetResult }

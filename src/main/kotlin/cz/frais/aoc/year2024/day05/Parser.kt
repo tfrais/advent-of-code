@@ -9,8 +9,7 @@ object Parser {
         val pageOrderingRules = mutableListOf<Pair<Int, Int>>()
         val pages = mutableListOf<List<Int>>()
 
-        input.split("\n")
-            .filter { it.isNotBlank() }
+        input.lines().filter { it.isNotBlank() }
             .forEach {
                 if (it.contains(PAGE_ORDER_SEPARATOR)) {
                     pageOrderingRules.add(
