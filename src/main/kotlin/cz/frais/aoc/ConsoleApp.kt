@@ -8,8 +8,8 @@ object ConsoleApp {
 
     private val logger = KotlinLogging.logger {}
 
-    private val solution: AdventOfCodeDaySolution = cz.frais.aoc.year2015.day25.Year2015Day25
-    private val input: String = object {}.javaClass.getResource("/2015/day22_input.txt")!!.readText()
+    private val solution: AdventOfCodeDaySolution = cz.frais.aoc.year2015.day24.Year2015Day24
+    private val input: String = object {}.javaClass.getResource("/2015/day24_input.txt")!!.readText()
 
     @JvmStatic
     fun main(args: Array<String>) {
