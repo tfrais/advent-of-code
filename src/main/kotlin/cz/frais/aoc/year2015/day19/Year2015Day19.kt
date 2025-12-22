@@ -42,27 +42,25 @@ object Year2015Day19 : AdventOfCodeDaySolution {
 
     override fun computePart2(input: String): Long {
         val parsedInput = parseInput(input)
-        val map = mutableMapOf("e" to 0)
-        val toProcess = mutableSetOf("e")
-        while (parsedInput.string !in map) {
-            val current = toProcess.first()
-            toProcess.remove(current)
-            val currentDistance = map[current]!!
+        val distanceMap = mutableMapOf("e" to 0)
+        val queue = ArrayDeque<String>()
+        queue += "e"
+        while (parsedInput.string !in distanceMap) {
+            val current = queue.removeFirst()
+            val currentDistance = distanceMap[current]!!
             for (transition in parsedInput.transitions) {
                 for (newWord in newWords(current, transition)) {
-                    if (newWord !in map) {
-                        toProcess += newWord
-                        map[newWord] = currentDistance + 1
-                    } else {
-                        if (map[newWord]!! > currentDistance + 1) {
-                            map[newWord] = currentDistance + 1
-                        }
-                    }
+                    if (newWord.length > parsedInput.string.length) continue
+                    if (newWord.length >= 13 && newWord.dropLast(13) != parsedInput.string.take(newWord.length - 13)) continue
+                    if (newWord in distanceMap) continue
+
+                    distanceMap[newWord] = currentDistance + 1
+                    queue += newWord
                 }
             }
         }
 
-        return map[parsedInput.string]!!.toLong()
+        return distanceMap[parsedInput.string]!!.toLong()
     }
 
 }
